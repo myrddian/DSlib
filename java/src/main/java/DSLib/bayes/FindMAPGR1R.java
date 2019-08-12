@@ -1,6 +1,7 @@
 package DSLib.bayes;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.jetbrains.annotations.NotNull;
 
 public class FindMAPGR1R {
 
@@ -29,7 +30,7 @@ public class FindMAPGR1R {
         hyperBeta = beta;
     }
 
-    public static double meanLogLikelyhood(double []dataSamples,
+    public static double meanLogLikelyhood(@NotNull double []dataSamples,
                                            double priorMean, double priorSd,
                                            double targetMean, double targetSd) {
         double logLikelyhood = 0.0;
@@ -43,9 +44,9 @@ public class FindMAPGR1R {
         return (logLikelyhood + logPrior);
     }
 
-    public static double []findNewSd(double []dataSamples,
-                                   double targetMean, double targetSd,
-                                   double alpha, double beta) {
+    public static double []findNewSd(@NotNull double []dataSamples,
+                                     double targetMean, double targetSd,
+                                     double alpha, double beta) {
         double meanSum = 0.0;
         for(double value:dataSamples) {
             meanSum = meanSum + (value - targetMean);
