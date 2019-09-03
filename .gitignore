@@ -1,0 +1,8 @@
+.idea
+.vs
+DSLib/.idea/
+DSLib/.vs
+DSLib/bin
+DSLib/obj
+java/.idea
+
