@@ -1,7 +1,10 @@
 package DSLib.bayes;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Random;
 
 public class FindMAPGR1R {
 
@@ -18,7 +21,7 @@ public class FindMAPGR1R {
         this.optimiserJump = optimiserJump;
     }
 
-    private double optimiserJump = 1;
+    private double optimiserJump = 5;
 
     public void setPriorDistribution(double priorMean, double priorSd) {
         this.priorMean = priorMean;
@@ -28,6 +31,64 @@ public class FindMAPGR1R {
     public void setHyperParameter(double alpha, double beta) {
         hyperAlpha = alpha;
         hyperBeta = beta;
+    }
+
+    public double [] optimiseMAP(@NotNull double []dataSamples, double priorMean, double priorSd){
+        var uniform = new UniformRealDistribution(0,optimiserJump);
+        Random cointoss = new Random();
+        int optCount = 100;
+        //Start with the initial condition
+
+        double bestMean = uniform.sample();
+        double bestSd = uniform.sample();
+        double bestScore = FindMAPGR1R.meanLogLikelyhood(dataSamples,
+                priorMean, priorSd, bestMean, bestSd);
+
+        for(int x=0; x < optCount ; ++x){
+            int bias = 1;
+            if(cointoss.nextBoolean()) {
+                bias = -1;
+            }
+            double newMean = bestMean + (uniform.sample() * bias);
+            var newVals = findNewSd(dataSamples, newMean,
+                    this.hyperAlpha, this.hyperBeta);
+            double score = meanLogLikelyhood(dataSamples,
+                    priorMean, priorSd, newVals[0], newVals[1]);
+            if(score > bestScore) {
+                bestMean = newVals[0];
+                bestSd = newVals[1];
+                bestScore  = score;
+            }
+        }
+        double []retVal = new double[2];
+        retVal[0] = bestMean;
+        retVal[1] = bestSd;
+        return retVal;
+    }
+
+    public double [] findMAP(@NotNull double[] dataSamples) {
+        int optCount = 20;
+
+        var bestValues = optimiseMAP(dataSamples, priorMean, priorSd);
+        var bestScore = meanLogLikelyhood(dataSamples,priorMean, priorSd, bestValues[0], bestValues[1]);
+
+        for(int x=0; x< optCount; ++x) {
+            var newValues = optimiseMAP(dataSamples, bestValues[0], bestValues[1]);
+            var newScore = meanLogLikelyhood(dataSamples,priorMean, priorSd, newValues[0], newValues[1]);
+            if(newScore > bestScore) {
+                bestValues = newValues;
+                bestScore = newScore;
+            }
+        }
+
+        return bestValues;
+    }
+
+    public double [] findMAP(@NotNull double[] dataSamples,
+                             @NotNull double pMean,
+                             @NotNull double pSd) {
+        setPriorDistribution(pMean, pSd);
+        return findMAP(dataSamples);
     }
 
     public static double meanLogLikelyhood(@NotNull double []dataSamples,
@@ -45,8 +106,9 @@ public class FindMAPGR1R {
     }
 
     public static double []findNewSd(@NotNull double []dataSamples,
-                                     double targetMean, double targetSd,
-                                     double alpha, double beta) {
+                                     double targetMean,
+                                     double alpha,
+                                     double beta) {
         double meanSum = 0.0;
         for(double value:dataSamples) {
             meanSum = meanSum + (value - targetMean);
@@ -55,12 +117,14 @@ public class FindMAPGR1R {
         double newAlpha = alpha + (dataSamples.length/2);
         double newBeta = beta + meanSum;
         double retMean = 0.0;
-
+        double retSd = 0;
         if(newBeta < 1) {
-            newBeta = 1.0;
-        }
+            retSd = 1;
 
-        double retSd = 1/(new GammaDistribution(newAlpha,newBeta).sample());
+        }
+        else {
+            retSd = 1/(new GammaDistribution(newAlpha,newBeta).sample());
+        }
 
         double []retVal = new double[2];
         retVal[0] = retMean + retSd;

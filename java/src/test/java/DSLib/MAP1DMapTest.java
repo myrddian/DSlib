@@ -12,11 +12,17 @@ public class MAP1DMapTest {
         double targetSd = 1;
         double alpha=1;
         double beta=1;
-        var newSd = FindMAPGR1R.findNewSd(testVal,targetMean,targetSd,alpha,beta);
+        var newSd = FindMAPGR1R.findNewSd(testVal,targetMean,alpha,beta);
         var logl = FindMAPGR1R.meanLogLikelyhood(testVal,3,2,0,1);
+        FindMAPGR1R mapgr1R = new FindMAPGR1R();
+        mapgr1R.setPriorDistribution(3,2);
+        var newOpt = mapgr1R.findMAP(testVal);
         System.out.println(newSd[0]);
         System.out.println(newSd[1]);
         System.out.println(logl);
+        System.out.println(newOpt[0]);
+        System.out.println(newOpt[1]);
+        System.out.println(FindMAPGR1R.meanLogLikelyhood(testVal,3,2,newOpt[0],newOpt[1]));
     }
 
 }
