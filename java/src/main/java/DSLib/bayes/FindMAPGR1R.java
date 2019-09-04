@@ -2,8 +2,6 @@ package DSLib.bayes;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.UniformRealDistribution;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Random;
 
 public class FindMAPGR1R {
@@ -33,7 +31,7 @@ public class FindMAPGR1R {
         hyperBeta = beta;
     }
 
-    public double [] optimiseMAP(@NotNull double []dataSamples, double priorMean, double priorSd){
+    public double [] optimiseMAP(double []dataSamples, double priorMean, double priorSd){
         var uniform = new UniformRealDistribution(0,optimiserJump);
         Random cointoss = new Random();
         int optCount = 100;
@@ -66,7 +64,7 @@ public class FindMAPGR1R {
         return retVal;
     }
 
-    public double [] findMAP(@NotNull double[] dataSamples) {
+    public double [] findMAP(double[] dataSamples) {
         int optCount = 20;
 
         var bestValues = optimiseMAP(dataSamples, priorMean, priorSd);
@@ -84,14 +82,14 @@ public class FindMAPGR1R {
         return bestValues;
     }
 
-    public double [] findMAP(@NotNull double[] dataSamples,
-                             @NotNull double pMean,
-                             @NotNull double pSd) {
+    public double [] findMAP(double[] dataSamples,
+                             double pMean,
+                             double pSd) {
         setPriorDistribution(pMean, pSd);
         return findMAP(dataSamples);
     }
 
-    public static double meanLogLikelyhood(@NotNull double []dataSamples,
+    public static double meanLogLikelyhood(double []dataSamples,
                                            double priorMean, double priorSd,
                                            double targetMean, double targetSd) {
         double logLikelyhood = 0.0;
@@ -105,7 +103,7 @@ public class FindMAPGR1R {
         return (logLikelyhood + logPrior);
     }
 
-    public static double []findNewSd(@NotNull double []dataSamples,
+    public static double []findNewSd(double []dataSamples,
                                      double targetMean,
                                      double alpha,
                                      double beta) {
