@@ -2,7 +2,11 @@ package DSLib.dataframe;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Scanner;
 
 
 public class LightWeightDataFrame {
@@ -28,6 +32,7 @@ public class LightWeightDataFrame {
     private ArrayList<LWDataRow> rows = new ArrayList<>();
     private HashMap<String, List<String>> columns = new HashMap<>();
     private HashMap<Integer, String> reverseMap = new HashMap<>();
+    private boolean skipBad = true;
 
     public LWDataRow loc(int index){
         if(rows.size() > index ){
@@ -40,35 +45,62 @@ public class LightWeightDataFrame {
         return rows.size();
     }
 
-    //Returns a copy of the column in memory
-    public List<String> get(String index){
-        ArrayList<String> clone = new ArrayList<>();
-        Iterator<String> iterator = columns.get(index).iterator();
-        while (iterator.hasNext()){
-            String val = (String) iterator.next();
-            clone.add(val);
-        }
-        return  clone;
+    public boolean skipInvalid() {
+        return skipBad;
     }
 
-    public List<Integer> getAsInt(String index){
+    public void setSkipFlag(boolean newFlag) {
+        skipBad = newFlag;
+    }
+
+    //Returns a copy of the column in memory
+    public LWDataColumn<String> get(String index){
+        LWDataColumn<String> retVal = new LWDataColumn<>(index,columns.get(index));
+        return retVal;
+    }
+
+    private boolean validInt(String item) {
+        try {
+            Integer.valueOf(item);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean validDouble(String item) {
+        try {
+            Double.valueOf(item);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    public LWDataColumn<Integer> getAsInt(String index){
         List<String> intervalRep = columns.get(index);
         ArrayList<Integer> retVal = new ArrayList<>();
         for(String value:intervalRep){
-            int converted = Integer.valueOf(value);
-            retVal.add(converted);
+            if(validInt(value) && skipBad ) {
+                int converted = Integer.valueOf(value);
+                retVal.add(converted);
+            }
         }
-        return retVal;
+        return new LWDataColumn<>(index,retVal);
     }
 
-    public List<Double> getAsDouble(String index){
+    public LWDataColumn<Double> getAsDouble(String index){
         List<String> intervalRep = columns.get(index);
         ArrayList<Double> retVal = new ArrayList<>();
         for(String value:intervalRep){
-            double converted = Double.valueOf(value);
-            retVal.add(converted);
+            if(validDouble(value) && skipBad ) {
+                double converted = Double.valueOf(value);
+                retVal.add(converted);
+            }
         }
-        return retVal;
+        return new LWDataColumn<>(index,retVal);
     }
 
 

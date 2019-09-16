@@ -24,6 +24,8 @@ public class DataFrameTest {
         List<String> newTEst = dataFrame.get("REPORT_ID");
         String valtest = testVals.get(0)  + " versus " + newTEst.get(0);
         System.out.println(valtest);
+        List<Integer> units = dataFrame.getAsInt("Total Units");
+        System.out.println(units);
 
     }
 }
