@@ -15,13 +15,11 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo.variables;
+package DSLib.markov.variable;
 
 
 import DSLib.markov.algo.PickerFreqTable;
 import DSLib.markov.algo.Picker;
-import DSLib.markov.datatypes.variables.MkVarEdge;
-import DSLib.markov.datatypes.variables.MkVarNode;
 
 import java.util.Random;
 import java.util.List;

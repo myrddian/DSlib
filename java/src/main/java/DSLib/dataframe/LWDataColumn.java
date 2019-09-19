@@ -52,6 +52,14 @@ public class LWDataColumn<T>  implements List<T>{
         return retVal;
     }
 
+    public List<String> getStrings() {
+        List<String> retVal = new ArrayList<>();
+        for(T value: values) {
+            retVal.add(String.valueOf(value));
+        }
+        return retVal;
+    }
+
     public String name() {
         return colname;
     }

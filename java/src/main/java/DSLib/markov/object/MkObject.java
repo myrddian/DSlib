@@ -15,11 +15,11 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.datatypes.objects;
+package DSLib.markov.object;
 
-import DSLib.markov.datatypes.ToJSON;
-import DSLib.markov.datatypes.variables.MkVariable;
-import DSLib.markov.datatypes.variables.MkVarNode;
+import DSLib.ToJSON;
+import DSLib.markov.variable.MkVariable;
+import DSLib.markov.variable.MkVarNode;
 
 import java.util.HashMap;
 import java.util.Map;

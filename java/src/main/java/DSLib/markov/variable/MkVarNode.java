@@ -15,19 +15,16 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.datatypes.variables;
+package DSLib.markov.variable;
 
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class MkVarNode {
 
     private String varValue;
     private long varFreq = 0l;
-    List<MkVarEdge> edgesOut = new Vector<>();
-    Map<MkVarNode, MkVarEdge> nodeEdge = new Hashtable<>();
+    private List<MkVarEdge> edgesOut = new ArrayList<>();
+    private Map<MkVarNode, MkVarEdge> nodeEdge = new HashMap<>();
     private MODE mode = MODE.NODE;
 
     public enum MODE {START_NODE, END_NODE, NODE }

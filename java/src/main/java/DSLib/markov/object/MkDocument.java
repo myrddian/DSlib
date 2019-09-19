@@ -14,19 +14,17 @@
         You should have received a copy of the GNU General Public License
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
-package DSLib.markov.datatypes.objects;
+package DSLib.markov.object;
 
 import DSLib.markov.algo.TrialTree;
-import DSLib.markov.algo.objects.MkObjectCondition;
-import DSLib.markov.algo.objects.MkObjectTrialTree;
-import DSLib.markov.datatypes.variables.MkVariable;
+import DSLib.markov.variable.MkVariable;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class MkDocument {
 
-    private List<MkVariable> variables = new Vector<>();
+    private List<MkVariable> variables = new ArrayList<>();
 
     public void addVariableToSchema(MkVariable newVar) {
         variables.add(newVar);
@@ -35,7 +33,7 @@ public class MkDocument {
     public int schemaSize() { return variables.size(); }
 
     public List<MkObject> generateSamples(int samples) {
-        Vector<MkObject> retList = new Vector<>();
+        List<MkObject> retList = new ArrayList<>();
 
         for(int counter=0; counter < samples; ++counter) {
             retList.add(generateSample());

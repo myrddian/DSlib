@@ -15,11 +15,11 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo.variables;
+package DSLib.markov.variable;
 
 import java.util.Hashtable;
 import java.util.Map;
-import DSLib.markov.datatypes.variables.MkVarNode;
+
 import DSLib.markov.algo.ProbResults;
 
 public class MkVarProbRes implements ProbResults<MkVarNode> {

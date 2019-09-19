@@ -15,7 +15,15 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo;
+package DSLib;
 
-public interface Filter {
+import java.util.List;
+
+public interface ParameterResult extends ToJSON {
+
+    boolean setAttribute(String key, String value);
+    boolean setArrayAttribute(String key, List<ParameterResult> value);
+    String getAttribute(String key);
+    List<ParameterResult> getArrayAttribute(String key);
+
 }

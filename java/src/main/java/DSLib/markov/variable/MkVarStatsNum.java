@@ -15,13 +15,10 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo.variables;
+package DSLib.markov.variable;
 
 import DSLib.markov.algo.Stats;
 import DSLib.markov.algo.TrialTree;
-import DSLib.markov.datatypes.variables.MkVarEdge;
-import DSLib.markov.datatypes.variables.MkVarGraph;
-import DSLib.markov.datatypes.variables.MkVarNode;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,18 +1,16 @@
 package DSLib;
 
 import DSLib.markov.algo.TrialTree;
-import DSLib.markov.algo.objects.MkObjectCondition;
-import DSLib.markov.datatypes.objects.MkDocument;
-import DSLib.markov.datatypes.objects.MkObject;
-import DSLib.markov.datatypes.variables.MkVarNode;
-import DSLib.markov.datatypes.variables.MkVariable;
+import DSLib.markov.object.MkObjectCondition;
+import DSLib.markov.object.MkDocument;
+import DSLib.markov.object.MkObject;
+import DSLib.markov.variable.MkVarNode;
+import DSLib.markov.variable.MkVariable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MkObjDocTest {
     @Test

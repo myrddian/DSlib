@@ -15,11 +15,9 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo.objects;
+package DSLib.markov.object;
 
 import DSLib.markov.algo.TrialTree;
-import DSLib.markov.datatypes.objects.MkDocument;
-import DSLib.markov.datatypes.objects.MkObject;
 
 import java.util.List;
 

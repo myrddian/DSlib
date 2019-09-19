@@ -16,11 +16,9 @@
 */
 
 
-package DSLib.markov.algo.variables;
+package DSLib.markov.variable;
 
 import DSLib.markov.algo.Walk;
-import DSLib.markov.datatypes.variables.MkVarGraph;
-import DSLib.markov.datatypes.variables.MkVarNode;
 
 import java.util.List;
 import java.util.Vector;

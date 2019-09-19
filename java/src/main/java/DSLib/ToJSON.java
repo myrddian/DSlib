@@ -15,7 +15,7 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.datatypes;
+package DSLib;
 
 public interface ToJSON {
 

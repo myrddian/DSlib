@@ -15,7 +15,26 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.algo;
+package DSLib.markov.object;
 
-public interface MonteCarlo {
+public class MkObjectCondition {
+
+    private String variableName;
+    private String variableValue;
+
+    public String getVariableName() { return variableName; }
+    public String getVariableValue() { return variableValue; }
+
+    public boolean conditionSatisfied(MkObject testedObject) {
+        if( testedObject.getVariableValue(variableName).equals(variableValue)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setCondition(String varName, String varValue) {
+        variableName = varName;
+        variableValue = varValue;
+    }
+
 }

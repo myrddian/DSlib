@@ -15,7 +15,7 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.datatypes.variables;
+package DSLib.markov.variable;
 
 import java.util.*;
 
@@ -25,9 +25,9 @@ public class MkVarGraph {
         return new MkVarGraph();
     }
 
-    private List<MkVarEdge> edgeList = new Vector<>();
-    private List<MkVarNode> startingList = new Vector<>();
-    private Map<String, MkVarNode> nodeMap = new Hashtable<>();
+    private List<MkVarEdge> edgeList = new ArrayList<>();
+    private List<MkVarNode> startingList = new ArrayList<>();
+    private Map<String, MkVarNode> nodeMap = new HashMap<>();
 
     public void clear() {
         edgeList.clear();

@@ -15,9 +15,7 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package DSLib.markov.datatypes.variables;
-
-import DSLib.markov.algo.variables.MkVarWalker;
+package DSLib.markov.variable;
 
 import java.util.HashMap;
 import java.util.List;

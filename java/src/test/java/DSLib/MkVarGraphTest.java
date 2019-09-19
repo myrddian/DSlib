@@ -1,12 +1,12 @@
 package DSLib;
 
 import DSLib.markov.algo.TrialTree;
-import DSLib.markov.algo.variables.MkVarProbRes;
-import DSLib.markov.algo.variables.MkVarStatsNum;
-import DSLib.markov.algo.variables.MkVarWalker;
-import DSLib.markov.datatypes.variables.MkVarEdge;
-import DSLib.markov.datatypes.variables.MkVarGraph;
-import DSLib.markov.datatypes.variables.MkVarNode;
+import DSLib.markov.variable.MkVarProbRes;
+import DSLib.markov.variable.MkVarStatsNum;
+import DSLib.markov.variable.MkVarWalker;
+import DSLib.markov.variable.MkVarEdge;
+import DSLib.markov.variable.MkVarGraph;
+import DSLib.markov.variable.MkVarNode;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

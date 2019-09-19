@@ -3,7 +3,7 @@ package DSLib.dataframe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVUtil {
+class CSVUtil {
 
     public static final char DEFAULT_SEPARATOR = ',';
     public static final char DEFAULT_QUOTE = '"';
