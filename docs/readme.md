@@ -1,5 +1,7 @@
 ## Welcome to DSLib
 
+[![CodeFactor](https://www.codefactor.io/repository/github/myrddian/dslib/badge/master)](https://www.codefactor.io/repository/github/myrddian/dslib/overview/master)
+
 DSLib - Simply named is a collection of data science methods and or techniques which I've learnt during my time, 
 it was split from another project I was working on called MarkoDB. The idea was that these algorithms would
 later be incorporated back into MarkovDB.
