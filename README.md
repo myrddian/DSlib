@@ -1,37 +1,16 @@
-## Welcome to GitHub Pages
+## Welcome to DSLib
 
-You can use the [editor on GitHub](https://github.com/myrddian/DSlib/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+DSLib - Simply named is a collection of data science methods and or techniques which I've learnt during my time, 
+it was split from another project I was working on called MarkoDB. The idea was that these algorithms would
+later be incorporated back into MarkovDB.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Languages
 
-### Markdown
+At the moment the idea is to support 2 or more languages, these are at the moment, Java and C#, depending on time I might
+add RUST.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Focus
 
-```markdown
-Syntax highlighted code block
+This library is a little bit more focused on Generative models and classifiers, as such you wont see a broad
+range of algorithms like SPARK, because it was split from MarkovDB it also has a focus on graph and category theory.
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/myrddian/DSlib/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
