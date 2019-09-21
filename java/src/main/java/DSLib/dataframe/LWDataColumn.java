@@ -1,7 +1,5 @@
 package DSLib.dataframe;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 
 public class LWDataColumn<T>  implements List<T>{
@@ -74,7 +72,6 @@ public class LWDataColumn<T>  implements List<T>{
         original = false;
     }
 
-    @NotNull
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return get(fromIndex,toIndex);
@@ -86,27 +83,27 @@ public class LWDataColumn<T>  implements List<T>{
     }
 
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         return false;
     }
 
     @Override
-    public boolean addAll(@NotNull Collection<? extends T> c) {
+    public boolean addAll(Collection<? extends T> c) {
         return false;
     }
 
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends T> c) {
+    public boolean addAll(int index, Collection<? extends T> c) {
         return false;
     }
 
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         return false;
     }
 
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         return false;
     }
 
@@ -127,13 +124,13 @@ public class LWDataColumn<T>  implements List<T>{
         return values.lastIndexOf(o);
     }
 
-    @NotNull
+
     @Override
     public ListIterator<T> listIterator() {
         return values.listIterator();
     }
 
-    @NotNull
+
     @Override
     public ListIterator<T> listIterator(int index) {
         return values.listIterator(index);
@@ -149,21 +146,21 @@ public class LWDataColumn<T>  implements List<T>{
         return values.contains(o);
     }
 
-    @NotNull
+
     @Override
     public Iterator<T> iterator() {
         return values.iterator();
     }
 
-    @NotNull
+
     @Override
     public Object[] toArray() {
         return values.toArray();
     }
 
-    @NotNull
+
     @Override
-    public <T1> T1[] toArray(@NotNull T1[] a) {
+    public <T1> T1[] toArray(T1[] a) {
         return values.toArray(a);
     }
 
