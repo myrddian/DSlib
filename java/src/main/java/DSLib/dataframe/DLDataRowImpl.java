@@ -2,14 +2,14 @@ package DSLib.dataframe;
 
 import java.util.*;
 
-class LWDataRowImpl implements LWDataRow {
+class DLDataRowImpl implements DLDataRow {
 
     private HashMap<String,String> rowValues = new HashMap<>();
 
 
     @Override
-    public LWDataRowImpl clone(){
-        return new LWDataRowImpl(this);
+    public DLDataRowImpl clone(){
+        return new DLDataRowImpl(this);
     }
 
     @Override
@@ -18,15 +18,15 @@ class LWDataRowImpl implements LWDataRow {
     }
 
     @Override
-    public LWDataRowImpl insertCol(String rowIndex, String rowVal) {
-        LWDataRowImpl modified = this.clone();
+    public DLDataRowImpl insertCol(String rowIndex, String rowVal) {
+        DLDataRowImpl modified = this.clone();
         modified.rowValues.put(rowIndex,rowVal);
         return modified;
     }
 
     @Override
-    public LWDataRow modify(String rowIndex, String newVal) {
-        LWDataRowImpl modified = this.clone();
+    public DLDataRow modify(String rowIndex, String newVal) {
+        DLDataRowImpl modified = this.clone();
         modified.rowValues.put(rowIndex,newVal);
         return modified;
     }
@@ -36,33 +36,33 @@ class LWDataRowImpl implements LWDataRow {
         return rowValues.get(index);
     }
 
-    public LWDataRowImpl(List<String> rowval, Map<Integer, String> reverDict) {
+    public DLDataRowImpl(List<String> rowval, Map<Integer, String> reverDict) {
         for(int counter=0; counter < rowval.size(); ++counter) {
             rowValues.put(reverDict.get(counter), rowval.get(counter));
         }
     }
 
-    public LWDataRowImpl(Map<String, List<String>> columns, int location) {
+    public DLDataRowImpl(Map<String, List<String>> columns, int location) {
         for(String colName:columns.keySet()) {
             rowValues.put(colName,columns.get(colName).get(location));
         }
     }
 
-    public LWDataRowImpl() {
+    public DLDataRowImpl() {
 
     }
 
-    LWDataRowImpl(LWDataRowImpl orig) {
+    DLDataRowImpl(DLDataRowImpl orig) {
         rowValues.putAll(orig.rowValues);
     }
 
-    LWDataRowImpl(LWDataRow orig) {
+    DLDataRowImpl(DLDataRow orig) {
         for(String key:orig.getColumns()) {
             rowValues.put(key,orig.get(key));
         }
     }
 
-    public LWDataRowImpl(Map<String, String> values) {
+    public DLDataRowImpl(Map<String, String> values) {
         rowValues.putAll(values);
     }
 

@@ -2,13 +2,13 @@ package DSLib.dataframe;
 
 import java.util.*;
 
-public class LWDataColumn<T>  implements List<T>{
+public class DLDataColumn<T>  implements List<T>{
 
     private String colname;
     private boolean original = true;
     private List<T> values = new ArrayList<>();
 
-    public LWDataColumn(String name, List<T> items) {
+    public DLDataColumn(String name, List<T> items) {
         colname = name;
         for(T item:items){
             values.add(item);

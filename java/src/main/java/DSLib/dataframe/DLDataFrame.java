@@ -6,24 +6,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class LightWeightDataFrame {
+public class DLDataFrame {
 
     //Instance methods
 
-    public static LightWeightDataFrame read_csv(String csvFile) {
-        var tmp = new LightWeightDataFrame();
+    public static DLDataFrame read_csv(String csvFile) {
+        var tmp = new DLDataFrame();
         tmp.parseCSV(csvFile, true, CSVUtil.DEFAULT_SEPARATOR);
         return tmp;
     }
 
-    public static LightWeightDataFrame read_csv(String csvFile, boolean header) {
-        var tmp = new LightWeightDataFrame();
+    public static DLDataFrame read_csv(String csvFile, boolean header) {
+        var tmp = new DLDataFrame();
         tmp.parseCSV(csvFile, header, CSVUtil.DEFAULT_SEPARATOR);
         return tmp;
     }
 
-    public static LightWeightDataFrame read_csv(String csvFile, boolean header, char seperator) {
-        var tmp = new LightWeightDataFrame();
+    public static DLDataFrame read_csv(String csvFile, boolean header, char seperator) {
+        var tmp = new DLDataFrame();
         tmp.parseCSV(csvFile, header, seperator);
         return tmp;
     }
@@ -49,10 +49,10 @@ public class LightWeightDataFrame {
     //Main functionality
 
 
-    public LightWeightDataFrame window(String [] fields) {
-        LightWeightDataFrame newDataFrame = new LightWeightDataFrame();
-        for(LWDataRowImpl row: rows) {
-            LWDataRowImpl newRow = new LWDataRowImpl();
+    public DLDataFrame window(String [] fields) {
+        DLDataFrame newDataFrame = new DLDataFrame();
+        for(DLDataRowImpl row: rows) {
+            DLDataRowImpl newRow = new DLDataRowImpl();
             for (String matchedField: fields) {
                 newRow.insertData(matchedField,row.get(matchedField));
             }
@@ -62,17 +62,17 @@ public class LightWeightDataFrame {
         return newDataFrame;
     }
 
-    public LightWeightDataFrame select(String index, String value) {
+    public DLDataFrame select(String index, String value) {
         return select(index, value,new ArrayList<String>(columns.keySet()));
     }
 
-    public LightWeightDataFrame select(String index, String filterValue, List<String> fields) {
+    public DLDataFrame select(String index, String filterValue, List<String> fields) {
         List<String> addString = new ArrayList<>();
         addString.add(filterValue);
         return select(index, addString, fields);
     }
 
-    public LightWeightDataFrame select(String index, String filterValue, String field) {
+    public DLDataFrame select(String index, String filterValue, String field) {
         List<String> addString = new ArrayList<>();
         List<String> addFields = new ArrayList<>();
         addString.add(filterValue);
@@ -80,21 +80,21 @@ public class LightWeightDataFrame {
         return select(index, addString, addFields);
     }
 
-    public LightWeightDataFrame select(String index, String [] filterValue, String [] fields){
+    public DLDataFrame select(String index, String [] filterValue, String [] fields){
         ArrayList<String> fieldList = Arrays.stream(fields).collect(Collectors.toCollection(ArrayList::new));
         return select(index, filterValue, fields);
     }
 
-    public LightWeightDataFrame select(String index, String [] filterValue, List<String> fields){
+    public DLDataFrame select(String index, String [] filterValue, List<String> fields){
         ArrayList<String> filterList = Arrays.stream(filterValue).collect(Collectors.toCollection(ArrayList::new));
         return select(index, filterList, fields );
     }
 
-    public LightWeightDataFrame select(String index, List<String> filterValue, List<String> fields) {
-        LightWeightDataFrame newDataFrame = new LightWeightDataFrame();
-        for(LWDataRowImpl row: rows) {
+    public DLDataFrame select(String index, List<String> filterValue, List<String> fields) {
+        DLDataFrame newDataFrame = new DLDataFrame();
+        for(DLDataRowImpl row: rows) {
             if(filterValue.contains(row.get(index))){
-                LWDataRowImpl newRow = new LWDataRowImpl();
+                DLDataRowImpl newRow = new DLDataRowImpl();
                 for (String matchedField: fields) {
                     newRow.insertData(matchedField,row.get(matchedField));
                 }
@@ -105,28 +105,28 @@ public class LightWeightDataFrame {
         return newDataFrame;
     }
 
-    public LWDataRow createRow() {
-        LWDataRowImpl newRow = new LWDataRowImpl();
+    public DLDataRow createRow() {
+        DLDataRowImpl newRow = new DLDataRowImpl();
         newRow.insertColumns(columns.keySet());
         return newRow;
     }
 
-    public LightWeightDataFrame addRow(LWDataRow newRow) {
-        LightWeightDataFrame newDataFrame = this.clone();
+    public DLDataFrame addRow(DLDataRow newRow) {
+        DLDataFrame newDataFrame = this.clone();
         if(!validCols(columns.keySet(),newRow.getColumns())) {
             return null;
         }
-        newDataFrame.rows.add(new LWDataRowImpl(newRow));
+        newDataFrame.rows.add(new DLDataRowImpl(newRow));
         newDataFrame.reparseColumns(columns.keySet().toArray(new String[columns()]));
         return newDataFrame;
     }
 
-    public LightWeightDataFrame addRow(Map<String, String> newRow) {
-        LightWeightDataFrame newDataFrame = this.clone();
+    public DLDataFrame addRow(Map<String, String> newRow) {
+        DLDataFrame newDataFrame = this.clone();
         if(!validCols(columns.keySet(),newRow.keySet())) {
             return null;
         }
-        newDataFrame.rows.add(new LWDataRowImpl(newRow));
+        newDataFrame.rows.add(new DLDataRowImpl(newRow));
         newDataFrame.reparseColumns(columns.keySet().toArray(new String[columns()]));
         return newDataFrame;
     }
@@ -196,7 +196,7 @@ public class LightWeightDataFrame {
         return true;
     }
 
-    public LWDataRow loc(int index){
+    public DLDataRow loc(int index){
         if(rows.size() > index ){
             return rows.get(index);
         }
@@ -211,14 +211,14 @@ public class LightWeightDataFrame {
         return reverseMap.keySet().size();
     }
 
-    public LightWeightDataFrame addColumn(String columnName) {
+    public DLDataFrame addColumn(String columnName) {
         if(columnName.length() == 0 ) {
             return null;
         }
         if(columns.containsKey(columnName)){
             return null;
         }
-        LightWeightDataFrame newDataFrame = this.clone();
+        DLDataFrame newDataFrame = this.clone();
         newDataFrame.columns.put(columnName, new ArrayList<>());
         newDataFrame.reverseMap.put(columns() +1, columnName);
         for(int counter=0; counter < size(); ++counter) {
@@ -228,14 +228,14 @@ public class LightWeightDataFrame {
         return newDataFrame;
     }
 
-    public LightWeightDataFrame addColumn(LWDataColumn newColumn) {
+    public DLDataFrame addColumn(DLDataColumn newColumn) {
         if (newColumn.size() != this.size()) {
             return null;
         }
         if(columns.containsKey(newColumn.name())){
             return null;
         }
-        LightWeightDataFrame newDataFrame = this.clone();
+        DLDataFrame newDataFrame = this.clone();
         newDataFrame.columns.put(newColumn.name(), new ArrayList<>());
         List<String> values = newColumn.getStrings();
         newDataFrame.columns.get(newColumn.name()).addAll(values);
@@ -245,17 +245,17 @@ public class LightWeightDataFrame {
     }
 
     //Returns a copy of the column in memory
-    public LWDataColumn<String> get(String index){
-        LWDataColumn<String> retVal = new LWDataColumn<>(index,columns.get(index));
+    public DLDataColumn<String> get(String index){
+        DLDataColumn<String> retVal = new DLDataColumn<>(index,columns.get(index));
         return retVal;
     }
 
-    public LWDataColumn<String> get(int index){
+    public DLDataColumn<String> get(int index){
        return get(reverseMap.get(index));
     }
 
 
-    public LWDataColumn<Integer> getAsInt(String index){
+    public DLDataColumn<Integer> getAsInt(String index){
         List<String> intervalRep = columns.get(index);
         ArrayList<Integer> retVal = new ArrayList<>();
         for(String value:intervalRep){
@@ -264,10 +264,10 @@ public class LightWeightDataFrame {
                 retVal.add(converted);
             }
         }
-        return new LWDataColumn<>(index,retVal);
+        return new DLDataColumn<>(index,retVal);
     }
 
-    public LWDataColumn<Double> getAsDouble(String index){
+    public DLDataColumn<Double> getAsDouble(String index){
         List<String> intervalRep = columns.get(index);
         ArrayList<Double> retVal = new ArrayList<>();
         for(String value:intervalRep){
@@ -276,11 +276,11 @@ public class LightWeightDataFrame {
                 retVal.add(converted);
             }
         }
-        return new LWDataColumn<>(index,retVal);
+        return new DLDataColumn<>(index,retVal);
     }
 
-    public LightWeightDataFrame clone(boolean deep) {
-        LightWeightDataFrame newdf = new LightWeightDataFrame();
+    public DLDataFrame clone(boolean deep) {
+        DLDataFrame newdf = new DLDataFrame();
         //Copy the stuff over
         newdf.skipBad = skipBad;
         newdf.maxFactorLevel = maxFactorLevel;
@@ -291,7 +291,7 @@ public class LightWeightDataFrame {
                 newdf.columns.put(reverseMap.get(key),new ArrayList<>());
             }
             for(int counter=0 ; counter < this.size(); ++counter) {
-                LWDataRowImpl newRow = (LWDataRowImpl) this.loc(counter).clone();
+                DLDataRowImpl newRow = (DLDataRowImpl) this.loc(counter).clone();
                 for(String key: columns.keySet()) {
                     newdf.columns.get(key).add(newRow.get(key));
                 }
@@ -306,14 +306,14 @@ public class LightWeightDataFrame {
         return newdf;
     }
 
-    public LightWeightDataFrame clone() {
+    public DLDataFrame clone() {
         return clone(false);
     }
 
 
     //Private Methods
 
-    private ArrayList<LWDataRowImpl> rows = new ArrayList<>();
+    private ArrayList<DLDataRowImpl> rows = new ArrayList<>();
     private HashMap<String, List<String>> columns = new HashMap<>();
     private HashMap<Integer, String> reverseMap = new HashMap<>();
     private boolean skipBad = true;
@@ -336,7 +336,7 @@ public class LightWeightDataFrame {
         int origSize = size();
         rows.clear();
         for(int counter=0; counter < origSize; ++counter) {
-            rows.add(new LWDataRowImpl(columns,counter));
+            rows.add(new DLDataRowImpl(columns,counter));
         }
     }
 
@@ -350,7 +350,7 @@ public class LightWeightDataFrame {
             colId++;
         }
 
-        for(LWDataRowImpl row:rows) {
+        for(DLDataRowImpl row:rows) {
             for(String colKey:columns.keySet()) {
                 columns.get(colKey).add(row.get(colKey));
             }
@@ -424,7 +424,7 @@ public class LightWeightDataFrame {
                         }
                     }
                 }
-                LWDataRowImpl dataRow = new LWDataRowImpl(row, reverseMap);
+                DLDataRowImpl dataRow = new DLDataRowImpl(row, reverseMap);
                 rows.add(dataRow);
                 //Add the column
                 for(int counter=0; counter < row.size(); ++counter) {
