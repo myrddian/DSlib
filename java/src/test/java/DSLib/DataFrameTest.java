@@ -1,7 +1,9 @@
 package DSLib;
+
+import DSLib.dataframe.DLDataFrame;
+import DSLib.dataframe.DLDataFrameFactory;
 import DSLib.dataframe.DLDataRow;
 import org.junit.jupiter.api.Test;
-import DSLib.dataframe.DLDataFrame;
 
 import java.util.List;
 
@@ -11,13 +13,13 @@ public class DataFrameTest {
 
     @Test
     public void loadCsv() {
-        DLDataFrame dataFrame = DLDataFrame.read_csv(classLoader.getResource("german.data").getFile(), false, ' ');
+        DLDataFrame dataFrame = DLDataFrameFactory.read_csv(classLoader.getResource("german.data").getFile(), false, ' ');
         System.out.println(dataFrame.size());
     }
 
     @Test
     public void loadCsvTwo() {
-        DLDataFrame dataFrame = DLDataFrame.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
+        DLDataFrame dataFrame = DLDataFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
         System.out.println(dataFrame.size());
         System.out.println(dataFrame.loc(0).get("REPORT_ID"));
         List<String> testVals = dataFrame.get("REPORT_ID");
@@ -32,7 +34,7 @@ public class DataFrameTest {
 
     @Test
     public void cloneTest() {
-        DLDataFrame dataFrame = DLDataFrame.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
+        DLDataFrame dataFrame = DLDataFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
         System.out.println(dataFrame.size());
         System.out.println(dataFrame.loc(0).get("REPORT_ID"));
         DLDataFrame newDataFrame = dataFrame.clone();
@@ -41,14 +43,14 @@ public class DataFrameTest {
         System.out.println(dataFrame.isFactor("REPORT_ID"));
         System.out.println(dataFrame.isFactor("Position Type"));
         System.out.println(dataFrame.isFactor("Position Type",20));
-        DLDataFrame germanData = DLDataFrame.read_csv(classLoader.getResource("german.data").getFile(), false, ' ');
+        DLDataFrame germanData = DLDataFrameFactory.read_csv(classLoader.getResource("german.data").getFile(), false, ' ');
         System.out.println(germanData.isFactor(0,20));
 
     }
 
     @Test
     public void selectTest() {
-        DLDataFrame dataFrame = DLDataFrame.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
+        DLDataFrame dataFrame = DLDataFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
         DLDataFrame adelaideData = dataFrame.select("Suburb", "ADELAIDE");
         DLDataFrame reducedFields = dataFrame.select("Suburb", "ADELAIDE", "Total Units");
         String [] fields = {"Suburb","Total Units"};

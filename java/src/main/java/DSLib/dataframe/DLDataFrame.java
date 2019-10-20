@@ -1,441 +1,86 @@
 package DSLib.dataframe;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
+public interface DLDataFrame {
 
-public class DLDataFrame {
+    enum TYPES {FACTOR, REAL, STRING, INTEGER }
 
-    //Instance methods
+    boolean skipInvalid();
 
-    public static DLDataFrame read_csv(String csvFile) {
-        var tmp = new DLDataFrame();
-        tmp.parseCSV(csvFile, true, CSVUtil.DEFAULT_SEPARATOR);
-        return tmp;
-    }
+    void setSkipFlag(boolean newFlag);
 
-    public static DLDataFrame read_csv(String csvFile, boolean header) {
-        var tmp = new DLDataFrame();
-        tmp.parseCSV(csvFile, header, CSVUtil.DEFAULT_SEPARATOR);
-        return tmp;
-    }
+    int getMaxFactorLevel();
 
-    public static DLDataFrame read_csv(String csvFile, boolean header, char seperator) {
-        var tmp = new DLDataFrame();
-        tmp.parseCSV(csvFile, header, seperator);
-        return tmp;
-    }
+    void setMaxFactorLevel(int newMaxFactor);
 
-    //Getter/setters
+    DLDataFrame window(String[] fields);
 
-    public boolean skipInvalid() {
-        return skipBad;
-    }
+    DLDataFrame select(String index, String value);
 
-    public void setSkipFlag(boolean newFlag) {
-        skipBad = newFlag;
-    }
+    DLDataFrame select(String index, String filterValue, List<String> fields);
 
-    public int getMaxFactorLevel() {
-        return maxFactorLevel;
-    }
+    DLDataFrame select(String index, String filterValue, String field);
 
-    public void setMaxFactorLevel(int newMaxFactor) {
-        maxFactorLevel = newMaxFactor;
-    }
+    DLDataFrame select(String index, String[] filterValue, String[] fields);
 
-    //Main functionality
+    DLDataFrame select(String index, String[] filterValue, List<String> fields);
 
+    DLDataFrame select(String index, List<String> filterValue, List<String> fields);
 
-    public DLDataFrame window(String [] fields) {
-        DLDataFrame newDataFrame = new DLDataFrame();
-        for(DLDataRowImpl row: rows) {
-            DLDataRowImpl newRow = new DLDataRowImpl();
-            for (String matchedField: fields) {
-                newRow.insertData(matchedField,row.get(matchedField));
-            }
-            newDataFrame.rows.add(newRow);
-        }
-        newDataFrame.reparseColumns(fields);
-        return newDataFrame;
-    }
+    DLDataRow createRow();
 
-    public DLDataFrame select(String index, String value) {
-        return select(index, value,new ArrayList<String>(columns.keySet()));
-    }
+    DLDataFrame addRow(DLDataRow newRow);
 
-    public DLDataFrame select(String index, String filterValue, List<String> fields) {
-        List<String> addString = new ArrayList<>();
-        addString.add(filterValue);
-        return select(index, addString, fields);
-    }
+    DLDataFrame addRow(Map<String, String> newRow);
 
-    public DLDataFrame select(String index, String filterValue, String field) {
-        List<String> addString = new ArrayList<>();
-        List<String> addFields = new ArrayList<>();
-        addString.add(filterValue);
-        addFields.add(field);
-        return select(index, addString, addFields);
-    }
+    List<String> getColNames();
 
-    public DLDataFrame select(String index, String [] filterValue, String [] fields){
-        ArrayList<String> fieldList = Arrays.stream(fields).collect(Collectors.toCollection(ArrayList::new));
-        return select(index, filterValue, fields);
-    }
+    List<String> getFactors(String index);
 
-    public DLDataFrame select(String index, String [] filterValue, List<String> fields){
-        ArrayList<String> filterList = Arrays.stream(filterValue).collect(Collectors.toCollection(ArrayList::new));
-        return select(index, filterList, fields );
-    }
+    List<String> getFactors(String index, int maxFactor);
 
-    public DLDataFrame select(String index, List<String> filterValue, List<String> fields) {
-        DLDataFrame newDataFrame = new DLDataFrame();
-        for(DLDataRowImpl row: rows) {
-            if(filterValue.contains(row.get(index))){
-                DLDataRowImpl newRow = new DLDataRowImpl();
-                for (String matchedField: fields) {
-                    newRow.insertData(matchedField,row.get(matchedField));
-                }
-                newDataFrame.rows.add(newRow);
-            }
-        }
-        newDataFrame.reparseColumns(fields.toArray(new String[fields.size()]));
-        return newDataFrame;
-    }
+    Map<String, Integer> getFactorFrequency(int index);
 
-    public DLDataRow createRow() {
-        DLDataRowImpl newRow = new DLDataRowImpl();
-        newRow.insertColumns(columns.keySet());
-        return newRow;
-    }
+    Map<String, Integer> getFactorFrequency(int index, int maxFactor);
 
-    public DLDataFrame addRow(DLDataRow newRow) {
-        DLDataFrame newDataFrame = this.clone();
-        if(!validCols(columns.keySet(),newRow.getColumns())) {
-            return null;
-        }
-        newDataFrame.rows.add(new DLDataRowImpl(newRow));
-        newDataFrame.reparseColumns(columns.keySet().toArray(new String[columns()]));
-        return newDataFrame;
-    }
+    Map<String, Integer> getFactorFrequency(String index);
 
-    public DLDataFrame addRow(Map<String, String> newRow) {
-        DLDataFrame newDataFrame = this.clone();
-        if(!validCols(columns.keySet(),newRow.keySet())) {
-            return null;
-        }
-        newDataFrame.rows.add(new DLDataRowImpl(newRow));
-        newDataFrame.reparseColumns(columns.keySet().toArray(new String[columns()]));
-        return newDataFrame;
-    }
+    Map<String, Integer> getFactorFrequency(String index, int maxFactor);
 
-    public List<String> getColNames() {
-        ArrayList<String> retcolNames = new ArrayList<>();
-        retcolNames.addAll(columns.keySet());
-        return retcolNames;
-    }
+    List<String> getFactors(int index);
 
-    public List<String> getFactors(String index) {
-        return getFactors(index,this.maxFactorLevel);
-    }
+    List<String> getFactors(int index, int maxFactor);
 
-    public List<String> getFactors(String index, int maxFactor) {
+    boolean isFactor(int index);
 
-        if(!isFactor(index,maxFactor)) {
-            return new ArrayList<>();
-        }
-        return new ArrayList<>(aggregateColumn(index).keySet());
-    }
+    boolean isFactor(int index, int maxFactor);
 
-    public Map<String, Integer> getFactorFrequency(int index){
-        return getFactorFrequency(reverseMap.get(index),maxFactorLevel);
-    }
+    boolean isFactor(String index);
 
-    public Map<String, Integer> getFactorFrequency(int index, int maxFactor){
-        return getFactorFrequency(reverseMap.get(index),maxFactor);
-    }
+    boolean isFactor(String index, int maxFactor);
 
-    public Map<String, Integer> getFactorFrequency(String index){
-        return getFactorFrequency(index,maxFactorLevel);
-    }
+    DLDataRow loc(int index);
 
-    public Map<String, Integer> getFactorFrequency(String index, int maxFactor) {
-        if(!isFactor(index,maxFactor)) {
-            return null;
-        }
-        return aggregateColumn(index);
-    }
+    int size();
 
-    public List<String> getFactors(int index) {
-        return getFactors(reverseMap.get(index), maxFactorLevel);
-    }
+    int columns();
 
-    public List<String> getFactors(int index, int maxFactor) {
-        return getFactors(reverseMap.get(index), maxFactor);
-    }
+    DLDataFrame addColumn(String columnName);
 
-
-    public boolean isFactor(int index) {
-        return isFactor(reverseMap.get(index), maxFactorLevel);
-    }
-
-    public boolean isFactor(int index, int maxFactor) {
-        return isFactor(reverseMap.get(index), maxFactor);
-    }
-
-    public boolean isFactor(String index) {
-        return isFactor(index, maxFactorLevel);
-    }
-
-    public boolean isFactor(String index, int maxFactor) {
-        if(aggregateColumn(index).size() > maxFactor) {
-            return false;
-        }
-        return true;
-    }
-
-    public DLDataRow loc(int index){
-        if(rows.size() > index ){
-            return rows.get(index);
-        }
-        return null;
-    }
-
-    public int size() {
-        return rows.size();
-    }
-
-    public int columns(){
-        return reverseMap.keySet().size();
-    }
-
-    public DLDataFrame addColumn(String columnName) {
-        if(columnName.length() == 0 ) {
-            return null;
-        }
-        if(columns.containsKey(columnName)){
-            return null;
-        }
-        DLDataFrame newDataFrame = this.clone();
-        newDataFrame.columns.put(columnName, new ArrayList<>());
-        newDataFrame.reverseMap.put(columns() +1, columnName);
-        for(int counter=0; counter < size(); ++counter) {
-            newDataFrame.columns.get(columnName).add("");
-        }
-        newDataFrame.reparseRows();
-        return newDataFrame;
-    }
-
-    public DLDataFrame addColumn(DLDataColumn newColumn) {
-        if (newColumn.size() != this.size()) {
-            return null;
-        }
-        if(columns.containsKey(newColumn.name())){
-            return null;
-        }
-        DLDataFrame newDataFrame = this.clone();
-        newDataFrame.columns.put(newColumn.name(), new ArrayList<>());
-        List<String> values = newColumn.getStrings();
-        newDataFrame.columns.get(newColumn.name()).addAll(values);
-        newDataFrame.reverseMap.put(columns() +1, newColumn.name());
-        newDataFrame.reparseRows();
-        return newDataFrame;
-    }
+    DLDataFrame addColumn(DLDataColumn newColumn);
 
     //Returns a copy of the column in memory
-    public DLDataColumn<String> get(String index){
-        DLDataColumn<String> retVal = new DLDataColumn<>(index,columns.get(index));
-        return retVal;
-    }
+    DLDataColumn<String> get(String index);
 
-    public DLDataColumn<String> get(int index){
-       return get(reverseMap.get(index));
-    }
+    DLDataColumn<String> get(int index);
 
+    DLDataColumn<Integer> getAsInt(String index);
 
-    public DLDataColumn<Integer> getAsInt(String index){
-        List<String> intervalRep = columns.get(index);
-        ArrayList<Integer> retVal = new ArrayList<>();
-        for(String value:intervalRep){
-            if(validInt(value) && skipBad ) {
-                int converted = Integer.valueOf(value);
-                retVal.add(converted);
-            }
-        }
-        return new DLDataColumn<>(index,retVal);
-    }
+    DLDataColumn<Double> getAsDouble(String index);
 
-    public DLDataColumn<Double> getAsDouble(String index){
-        List<String> intervalRep = columns.get(index);
-        ArrayList<Double> retVal = new ArrayList<>();
-        for(String value:intervalRep){
-            if(validDouble(value) && skipBad ) {
-                double converted = Double.valueOf(value);
-                retVal.add(converted);
-            }
-        }
-        return new DLDataColumn<>(index,retVal);
-    }
+    DLDataFrame clone(boolean deep);
 
-    public DLDataFrame clone(boolean deep) {
-        DLDataFrame newdf = new DLDataFrame();
-        //Copy the stuff over
-        newdf.skipBad = skipBad;
-        newdf.maxFactorLevel = maxFactorLevel;
-
-        if(deep) {
-            for(Integer key: reverseMap.keySet()) {
-                newdf.reverseMap.put(key, reverseMap.get(key));
-                newdf.columns.put(reverseMap.get(key),new ArrayList<>());
-            }
-            for(int counter=0 ; counter < this.size(); ++counter) {
-                DLDataRowImpl newRow = (DLDataRowImpl) this.loc(counter).clone();
-                for(String key: columns.keySet()) {
-                    newdf.columns.get(key).add(newRow.get(key));
-                }
-                newdf.rows.add(newRow);
-            }
-        }
-        else {
-            newdf.reverseMap.putAll(reverseMap);
-            newdf.columns.putAll(columns);
-            newdf.rows.addAll(rows);
-        }
-        return newdf;
-    }
-
-    public DLDataFrame clone() {
-        return clone(false);
-    }
-
-
-    //Private Methods
-
-    private ArrayList<DLDataRowImpl> rows = new ArrayList<>();
-    private HashMap<String, List<String>> columns = new HashMap<>();
-    private HashMap<Integer, String> reverseMap = new HashMap<>();
-    private boolean skipBad = true;
-    private int maxFactorLevel = 10;
-
-
-    private boolean validCols(Collection<String> colNames, Collection<String> other) {
-        if(other.size() < columns() || other.size()  > columns()) {
-            return false;
-        }
-        for(String key:colNames) {
-            if(!other.contains(key)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void reparseRows() {
-        int origSize = size();
-        rows.clear();
-        for(int counter=0; counter < origSize; ++counter) {
-            rows.add(new DLDataRowImpl(columns,counter));
-        }
-    }
-
-    private void reparseColumns(String [] fields) {
-        int colId = 0;
-        columns.clear();
-        reverseMap.clear();
-        for(String key:fields) {
-            columns.put(key, new ArrayList<>());
-            reverseMap.put(colId, key);
-            colId++;
-        }
-
-        for(DLDataRowImpl row:rows) {
-            for(String colKey:columns.keySet()) {
-                columns.get(colKey).add(row.get(colKey));
-            }
-        }
-
-    }
-
-    private boolean validInt(String item) {
-        try {
-            Integer.valueOf(item);
-            return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean validDouble(String item) {
-        try {
-            Double.valueOf(item);
-            return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
-    }
-
-    private Map<String, Integer> aggregateColumn(String index) {
-        HashMap<String, Integer> tableTrack = new HashMap<>();
-        for(String colVal:columns.get(index)) {
-            if(!tableTrack.containsKey(colVal)) {
-                tableTrack.put(colVal, 1);
-            }
-            else {
-                int val = tableTrack.get(colVal);
-                tableTrack.put(colVal,val + 1);
-            }
-
-        }
-        return tableTrack;
-    }
-
-    private void parseCSV(String csvFile, boolean header, char seperator){
-
-        rows.clear();
-        columns.clear();
-        reverseMap.clear();
-
-        int lineCount = 0;
-        try(Scanner scanner = new Scanner(new File(csvFile))) {
-            while (scanner.hasNext()) {
-                List<String> row = CSVUtil.parseLine(scanner.nextLine(), seperator);
-                if(lineCount == 0 ){
-                    if(header == true ) {
-                        int row_count = 0;
-                        for(String header_name: row){
-                            String newHeader = header_name.replaceAll("^\"+|\"+$", "").trim();
-                            reverseMap.put(row_count,newHeader);
-                            columns.put(newHeader, new ArrayList<>());
-                            row_count++;
-                        }
-                        ++lineCount;
-                        continue;
-                    }
-                    else {
-                        //We have to generate a default header name
-                        for(int counter = 0; counter < row.size(); ++counter){
-                            String colName = "column-" + Integer.toString(counter);
-                            reverseMap.put(counter,colName);
-                            columns.put(colName, new ArrayList<>());
-                        }
-                    }
-                }
-                DLDataRowImpl dataRow = new DLDataRowImpl(row, reverseMap);
-                rows.add(dataRow);
-                //Add the column
-                for(int counter=0; counter < row.size(); ++counter) {
-                    List<String> col = columns.get(reverseMap.get(counter));
-                    col.add(row.get(counter));
-                }
-                ++lineCount;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
+    DLDataFrame clone();
 }
