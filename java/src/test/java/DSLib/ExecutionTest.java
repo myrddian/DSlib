@@ -6,7 +6,7 @@ public class ExecutionTest {
 
     @Test
     public void engineStart() {
-        ExecutionEngine executionEngine = new ExecutionEngine();
+        ExecutionEngine executionEngine = ExecutionEngine.getInstance();
         System.out.println("Total Capacity: " + Integer.toString(executionEngine.getScheduleCapacity()));
     }
 

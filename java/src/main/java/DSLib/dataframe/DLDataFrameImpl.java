@@ -1,5 +1,8 @@
 package DSLib.dataframe;
 
+import DSLib.exec.ExecuteParallelTask;
+import DSLib.exec.ExecutionEngine;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -80,9 +83,11 @@ public class DLDataFrameImpl implements DLDataFrame {
         return select(index, filterList, fields );
     }
 
+
+
     @Override
     public DLDataFrame select(String index, List<String> filterValue, List<String> fields) {
-        DLDataFrameImpl newDataFrame = new DLDataFrameImpl();
+        /*DLDataFrameImpl newDataFrame = new DLDataFrameImpl();
         for(DLDataRowImpl row: rows) {
             if(filterValue.contains(row.get(index))){
                 DLDataRowImpl newRow = new DLDataRowImpl();
@@ -93,7 +98,8 @@ public class DLDataFrameImpl implements DLDataFrame {
             }
         }
         newDataFrame.reparseColumns(fields.toArray(new String[fields.size()]));
-        return newDataFrame;
+        return newDataFrame;*/
+       return parallelSelect(index,filterValue,fields);
     }
 
     @Override
@@ -409,6 +415,26 @@ public class DLDataFrameImpl implements DLDataFrame {
 
         }
         return tableTrack;
+    }
+
+    private DLDataFrame parallelSelect(String index, List<String> filterValue, List<String> fields) {
+        ExecuteParallelTask parallelTask = ExecutionEngine.getInstance().createParallelTasks();
+        parallelTask.addParam("index", index);
+        parallelTask.addParam("filterValues", filterValue);
+        parallelTask.addParam("fields", fields);
+        parallelTask.addTasks(new ParallelFilterKernel());
+        for(DLDataRowImpl row: rows) {
+            parallelTask.schedule(row);
+        }
+        parallelTask.exec();
+        parallelTask.waitForTasks();
+        DLDataFrameImpl newDataFrame = new DLDataFrameImpl();
+        int outputSize = parallelTask.outputSize();
+        for(int counter=0 ; counter < outputSize; ++counter) {
+            newDataFrame.rows.add((DLDataRowImpl)parallelTask.getOutputItem());
+        }
+        newDataFrame.reparseColumns(fields.toArray(new String[fields.size()]));
+        return newDataFrame;
     }
 
     public void parseCSV(String csvFile, boolean header, char seperator){

@@ -8,7 +8,6 @@ import java.util.concurrent.*;
 public class ExecutionEngine {
 
     private ExecutorService executorService;
-    private BlockingQueue messageBox;
     private Map<PROCESS_CONTEXT, Integer> contextConfig = new HashMap<>();
 
     public enum PROCESS_CONTEXT { DEFAULT, OPTIMISER, INTEGRATION};
@@ -44,10 +43,23 @@ public class ExecutionEngine {
         executorService.execute(job);
     }
 
-    public ExecutionEngine() {
+    public static ExecutionEngine getInstance(){
+        if(instance == null){
+            synchronized (ExecutionEngine.class) {
+                if(instance == null){
+                    instance = new ExecutionEngine();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private ExecutionEngine() {
         executorService = Executors.newWorkStealingPool();
         int defaultSchedule = getScheduleCapacity();
         setScheduleCapacity(PROCESS_CONTEXT.DEFAULT, defaultSchedule);
     }
+    private static ExecutionEngine instance;
+
 
 }

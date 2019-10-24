@@ -4,12 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 public class ExecutionContext {
 
     List<Object> scheduledObjects = new ArrayList<>();
     Map<String, Object> parameters = new HashMap<>();
-    List<Object> outputList = new ArrayList<>();
+
+    public BlockingQueue getOutputList() {
+        return outputList;
+    }
+
+    public void setOutputList(BlockingQueue outputList) {
+        this.outputList = outputList;
+    }
+
+    BlockingQueue outputList;
 
     public List<Object> getSchedule() {
         return scheduledObjects;
@@ -30,9 +40,6 @@ public class ExecutionContext {
         outputList.add(res);
     }
 
-    public List<Object>  getResultList() {
-        return outputList;
-    }
 
     public void setScheduledObjects(List<Object> objects) {
         scheduledObjects.addAll(objects);
