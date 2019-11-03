@@ -14,7 +14,6 @@ jobs: # a collection of steps
       - run:
           name: Assemble JAR
           command: |
-            cd java/
             # Skip this for other nodes
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
               ./gradlew assemble

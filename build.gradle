@@ -36,6 +36,15 @@ dependencies {
 
 }
 
+version = '0.0.1'
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}
+
 test {
     // Use junit platform for unit tests
     useJUnitPlatform()
