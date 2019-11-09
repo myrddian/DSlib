@@ -1,19 +1,20 @@
-package dslib.dataframe;
+package dslib.dataframe.backend;
+
+import dslib.DSLib;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class CSVUtil {
 
-    public static final char DEFAULT_SEPARATOR = ',';
-    public static final char DEFAULT_QUOTE = '"';
+
 
     public static List<String> parseLine(String cvsLine) {
-        return parseLine(cvsLine, DEFAULT_SEPARATOR, DEFAULT_QUOTE);
+        return parseLine(cvsLine, DSLib.DEFAULT_SEPARATOR, DSLib.DEFAULT_QUOTE);
     }
 
     public static List<String> parseLine(String cvsLine, char separators) {
-        return parseLine(cvsLine, separators, DEFAULT_QUOTE);
+        return parseLine(cvsLine, separators, DSLib.DEFAULT_QUOTE);
     }
 
     public static List<String> parseLine(String cvsLine, char separators, char customQuote) {
@@ -26,7 +27,7 @@ class CSVUtil {
         }
 
         if (customQuote == ' ') {
-            customQuote = DEFAULT_QUOTE;
+            customQuote = DSLib.DEFAULT_QUOTE;
         }
 
         StringBuffer curVal = new StringBuffer();

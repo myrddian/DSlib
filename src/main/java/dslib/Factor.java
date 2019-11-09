@@ -1,4 +1,4 @@
-package dslib.dataframe;
+package dslib;
 
 public class Factor {
 

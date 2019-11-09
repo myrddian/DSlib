@@ -1,5 +1,6 @@
-package dslib.dataframe;
+package dslib.dataframe.kernels;
 
+import dslib.dataframe.backend.DRowImplString;
 import dslib.exec.ExecutionContext;
 import dslib.exec.ExecTask;
 
@@ -13,9 +14,9 @@ public class ParallelFilterKernel implements ExecTask {
         List<String> fields = (List<String>) context.get("fields");
         String index = (String) context.get("index");
         for(Object rowObject: context.getSchedule()) {
-            DLDataRowImpl row = (DLDataRowImpl) rowObject;
+            DRowImplString row = (DRowImplString) rowObject;
             if(filterValue.contains(row.get(index))){
-                DLDataRowImpl newRow = new DLDataRowImpl();
+                DRowImplString newRow = new DRowImplString();
                 for (String matchedField: fields) {
                     newRow.insertData(matchedField,row.get(matchedField));
                 }

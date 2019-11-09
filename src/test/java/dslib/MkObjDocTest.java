@@ -48,13 +48,6 @@ public class MkObjDocTest {
         document.addVariableToSchema(coin);
         document.addVariableToSchema(drink);
 
-        System.out.println("=========================================================================================================");
-        List<MkObject> samples = document.generateSamples(8);
-        for(MkObject object:samples) {
-            System.out.println(" OBJECT -  " + object.toJson());
-        }
-        System.out.println("=========================================================================================================");
-
         TrialTree<MkObjectCondition> trialTree = document.createTrialTree(1000);
         List<MkObjectCondition> conditionOne = new Vector<>();
         conditionOne.add(document.createCondition("weather","sunny"));
@@ -88,11 +81,6 @@ public class MkObjDocTest {
         MkDocument document = new MkDocument();
         document.parseAddVariable("testOne", new Vector<String>(Arrays.asList(simpleMarkov.split(","))));
         document.parseAddVariable("testTwo", new Vector<String>(Arrays.asList(testStringThree.split(","))));
-        System.out.println("=========================================================================================================");
-        List<MkObject> samples = document.generateSamples(10);
-        for(MkObject object:samples) {
-            System.out.println(" OBJECT -  " + object.toJson());
-        }
         System.out.println("=========================================================================================================");
 
         TrialTree<MkObjectCondition> trialTree = document.createTrialTree(1000);

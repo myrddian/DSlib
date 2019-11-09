@@ -17,14 +17,13 @@
 
 package dslib.markov.object;
 
-import dslib.ToJSON;
 import dslib.markov.variable.MkVariable;
 import dslib.markov.variable.MkVarNode;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MkObject implements ToJSON {
+public class MkObject {
 
     private HashMap<String, MkVarNode> variableValues = new HashMap<>();
     private HashMap<String, String> variableStringValues = new HashMap<>();
@@ -57,20 +56,4 @@ public class MkObject implements ToJSON {
        return variableStringValues;
     }
 
-    @Override
-    public String toJson() {
-        String returnVal = "{";
-
-        boolean first = true;
-        for(String varName: variableStringValues.keySet()) {
-            if(!first) {
-                returnVal = returnVal + ",";
-            }
-            returnVal = returnVal + " \"" + varName +  "\" : \"" + variableStringValues.get(varName) + "\" ";
-            first = false;
-        }
-
-        returnVal = returnVal + "}";
-        return returnVal;
-    }
 }

@@ -43,13 +43,9 @@ public class ExecutionEngine {
         executorService.execute(job);
     }
 
-    public static ExecutionEngine getInstance(){
+    public static synchronized ExecutionEngine getInstance(){
         if(instance == null){
-            synchronized (ExecutionEngine.class) {
-                if(instance == null){
-                    instance = new ExecutionEngine();
-                }
-            }
+            instance = new ExecutionEngine();
         }
         return instance;
     }
