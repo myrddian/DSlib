@@ -1,3 +1,20 @@
+/*      DSLib - Collection of Data Science Libraries
+        Copyright (C) 2019  Enzo Reyes
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the Affero GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>
+*/
+
 package dslib.dataframe.backend;
 
 import dslib.dataframe.DFrameSchema;
@@ -9,10 +26,6 @@ import java.util.*;
 public class DRowImplString implements DRow {
 
     private HashMap<String,String> rowValues = new HashMap<>();
-
-    public DRowImplString clone(){
-        return new DRowImplString(this);
-    }
 
     @Override
     public List<String> getColumns() {
@@ -55,39 +68,16 @@ public class DRowImplString implements DRow {
         }
     }
 
-    public DRowImplString(Map<String, List<String>> columns, int location) {
-        for(String colName:columns.keySet()) {
-            rowValues.put(colName,columns.get(colName).get(location));
-        }
-    }
-
-    public DRowImplString() {
-
-    }
-
+    public DRowImplString(){}
     public DRowImplString(DRowImplString orig) {
         rowValues.putAll(orig.rowValues);
     }
-
-    public DRowImplString(DRow orig) {
-        for(String key:orig.getColumns()) {
-            rowValues.put(key,orig.get(key));
-        }
-    }
-
-    public DRowImplString(Map<String, String> values) {
-        rowValues.putAll(values);
-    }
-
-
     public void insertData(String rowIndex, String rowVal){
         rowValues.put(rowIndex,rowVal);
     }
-
-    public void insertColumns(Collection<String> columns) {
-        for(String key:columns) {
-            rowValues.put(key,"");
-        }
+    public DRowImplString clone(){
+        return new DRowImplString(this);
     }
+
 
 }

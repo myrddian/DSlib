@@ -3,6 +3,7 @@ package dslib.dataframe;
 import dslib.DSLib;
 import dslib.dataframe.backend.DFrameMemoryCSVFactory;
 import dslib.dataframe.backend.DStoreStringImpl;
+import dslib.dataframe.implementation.DQueryImpl;
 
 import java.util.Collection;
 
@@ -26,6 +27,10 @@ public class DFrameFactory {
             return DFrameMemoryCSVFactory.ReadCSVToMemory(csvFile,header,seperator);
         }
         return null;
+    }
+
+    public static DQuery createQuery() {
+        return new DQueryImpl();
     }
 
 }

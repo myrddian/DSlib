@@ -67,6 +67,24 @@ public class DataFrameTest {
         System.out.println(accloc);
     }
 
+    @Test
+    public void modifyTest() {
+        DFrame dataFrame = DFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
+        DFrameSchemaBuilder modifySchema = DFrameSchemaBuilder.createSchema("Crash_Schema");
+        modifySchema.modifyExisting(dataFrame.getSchema());
+        modifySchema.defineColumn("Area Speed", DSLib.DataType.INTEGER);
+        modifySchema.defineColumn("ACCLOC_X", DSLib.DataType.FLOAT);
+        modifySchema.defineColumn("ACCLOC_Y", DSLib.DataType.FLOAT);
+        modifySchema.defineColumn("Total Units", DSLib.DataType.INTEGER);
+        DFrame crashFrame = dataFrame.apply(modifySchema.end()).select("Suburb", "Area Speed");
+        DRow newRow = crashFrame.createRow();
+        newRow = newRow.modify("Area Speed", 80);
+        newRow = newRow.modify("Suburb", "Tarneit");
+        System.out.println(crashFrame.size());
+        crashFrame = crashFrame.addRow(newRow);
+        System.out.println(crashFrame.size());
+    }
+
 /*
 
 

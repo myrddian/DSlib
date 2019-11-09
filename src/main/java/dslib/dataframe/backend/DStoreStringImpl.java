@@ -1,3 +1,20 @@
+/*      DSLib - Collection of Data Science Libraries
+        Copyright (C) 2019  Enzo Reyes
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the Affero GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>
+*/
+
 package dslib.dataframe.backend;
 
 import dslib.dataframe.DFrameStore;
@@ -78,30 +95,6 @@ public class DStoreStringImpl implements DFrameStore {
             e.printStackTrace();
         }
     }
-
-            /*public DFrame window(String[] fields) {
-
-    }*/
-   /*@Override
-    public List<String> getFactors(String index) {
-        return getFactors(index,this.maxFactorLevel);
-    }*/
-
-
-    /*@Override
-    public DFrame addRow(DRow newRow) {
-        DFrameImplString newDataFrame = this.clone();
-        if(!validCols(columns.keySet(),newRow.getColumns())) {
-            return null;
-        }
-        newDataFrame.rows.add(new DRowImplString(newRow));
-        newDataFrame.reparseColumns(columns.keySet().toArray(new String[columns()]));
-        return newDataFrame;
-    }*/
-
-    /*public DFrame select(String index, List<String> filterValue, List<String> fields) {
-       return parallelSelect(index,filterValue,fields);
-    }*/
 
     /*public DFrame addColumn(DColumn newColumn) {
         if (newColumn.size() != this.size()) {
