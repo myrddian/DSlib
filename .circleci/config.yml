@@ -7,6 +7,7 @@ jobs: # a collection of steps
       # Configure the JVM and Gradle to avoid OOM errors
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      CODECOV_TOKEN : "35450bfd-3947-426c-9e2c-964fa8cce290"
     docker: # run the steps with Docker
       - image: circleci/openjdk:11.0.3-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
     steps: # a collection of executable commands
