@@ -27,6 +27,7 @@ public class DSLib {
     public static final char DEFAULT_SEPARATOR = ',';
     public static final char DEFAULT_QUOTE = '"';
     public enum FileMode {MEMORY, OFF_DISK}
+    public enum SortType {ASC, DESC}
 
     public static boolean validInt(String item) {
         try {

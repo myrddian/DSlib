@@ -24,7 +24,7 @@ import dslib.dataframe.backend.DRowImplString;
 
 import java.util.List;
 
-public class DRowImplGeneric implements DRow {
+public class DRowProxyGeneric implements DRow {
 
     public void setBackImplementation(DRowImplString backImplementation) {
         this.backImplementation = backImplementation;
@@ -54,7 +54,7 @@ public class DRowImplGeneric implements DRow {
 
     @Override
     public DRow apply(DFrameSchema schema) {
-        DRowImplGeneric newRow = new DRowImplGeneric();
+        DRowProxyGeneric newRow = new DRowProxyGeneric();
         newRow.backImplementation = this.backImplementation;
         newRow.schema = schema;
         return newRow;
@@ -67,7 +67,7 @@ public class DRowImplGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.STRING) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowImplGeneric newRow = new DRowImplGeneric();
+            DRowProxyGeneric newRow = new DRowProxyGeneric();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;
@@ -82,7 +82,7 @@ public class DRowImplGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.INTEGER) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowImplGeneric newRow = new DRowImplGeneric();
+            DRowProxyGeneric newRow = new DRowProxyGeneric();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;
@@ -97,7 +97,7 @@ public class DRowImplGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.FLOAT) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowImplGeneric newRow = new DRowImplGeneric();
+            DRowProxyGeneric newRow = new DRowProxyGeneric();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;

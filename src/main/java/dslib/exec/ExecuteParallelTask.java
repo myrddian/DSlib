@@ -60,6 +60,7 @@ public class ExecuteParallelTask {
             taskRunner.setLatch(latch);
             taskRunner.setContext(context);
             taskRunner.setExecTaskList(execTaskList);
+            executionContexts.add(context);
             executionEngine.submitJob(taskRunner);
         }
     }
@@ -81,13 +82,14 @@ public class ExecuteParallelTask {
         }
     }
 
-    public int outputSize() {
-        return outputs.size();
-    }
+    public int contextSize() { return executionContexts.size(); }
+    public ExecutionContext getContext(int context) { return executionContexts.get(context); }
+    public int outputSize() {return outputs.size(); }
 
     private Map<Integer, List<Object>> scheduleListMapping = new HashMap<>();
     private Map<String, Object> paramaters = new HashMap<>();
     private List<ExecTask> execTaskList = new ArrayList<>();
+    private List<ExecutionContext> executionContexts = new ArrayList<>();
     private int threads = 1;
     private int jobCount = 0;
     private ExecutionEngine.SCHEDULE mode = ExecutionEngine.SCHEDULE.ROUND_ROBIN;

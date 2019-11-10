@@ -19,7 +19,7 @@ package dslib.dataframe.backend;
 
 import dslib.dataframe.DFrameSchema;
 import dslib.dataframe.DRow;
-import dslib.dataframe.frontend.DRowImplGeneric;
+import dslib.dataframe.frontend.DRowProxyGeneric;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class DRowImplString implements DRow {
 
     @Override
     public DRow apply(DFrameSchema schema) {
-        DRowImplGeneric genericRow = new DRowImplGeneric();
+        DRowProxyGeneric genericRow = new DRowProxyGeneric();
         genericRow.setBackImplementation(this);
         genericRow.setSchema(schema);
         return genericRow;

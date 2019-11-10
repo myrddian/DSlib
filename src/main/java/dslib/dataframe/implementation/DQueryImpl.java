@@ -17,19 +17,22 @@
 
 package dslib.dataframe.implementation;
 
+import dslib.DSLib;
+import dslib.dataframe.DFrame;
 import dslib.dataframe.DQuery;
+import dslib.dataframe.DQueryJoin;
 import dslib.dataframe.DQueryWhere;
 
-public class DQueryImpl implements DQuery, DQueryWhere {
+public class DQueryImpl implements DQuery{
 
     @Override
     public DQuery select(String... fields) {
-        return this;
+        return null;
     }
 
     @Override
     public DQuery filter(String field, String value) {
-        return this;
+        return null;
     }
 
     @Override
@@ -43,32 +46,22 @@ public class DQueryImpl implements DQuery, DQueryWhere {
     }
 
     @Override
-    public DQueryWhere where(String field, String value){
-        return this;
+    public DQueryWhere where(String field, String value) {
+        return null;
     }
 
     @Override
-    public DQueryWhere And(String value) {
-        return this;
+    public DQuery sort(String field, DSLib.SortType type) {
+        return null;
     }
 
     @Override
-    public DQueryWhere Or(String value) {
-        return this;
-    }
-
-    @Override
-    public DQueryWhere And(String field, String value) {
-        return this;
-    }
-
-    @Override
-    public DQueryWhere Or(String field, String value) {
-        return this;
+    public DQueryJoin join(DFrame joinFrame) {
+        return null;
     }
 
     @Override
     public DQuery end() {
-        return this;
+        return null;
     }
 }

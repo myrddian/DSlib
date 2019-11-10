@@ -176,7 +176,7 @@ public abstract class DFrameAbstract implements DFrame {
     @Override
     public DRow createRow() {
         DRowImplString stringVersion = new DRowImplString();
-        DRowImplGeneric genericContainer = new DRowImplGeneric();
+        DRowProxyGeneric genericContainer = new DRowProxyGeneric();
         genericContainer.setSchema(getSchema());
         genericContainer.setBackImplementation(stringVersion);
         return genericContainer;

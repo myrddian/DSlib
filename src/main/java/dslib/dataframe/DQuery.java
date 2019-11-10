@@ -17,6 +17,8 @@
 
 package dslib.dataframe;
 
+import dslib.DSLib;
+
 public interface DQuery {
 
     DQuery select(String ... fields);
@@ -24,5 +26,7 @@ public interface DQuery {
     DQuery filter(String field, long value);
     DQuery filter(String field, double value);
     DQueryWhere where(String field, String value);
+    DQuery sort(String field, DSLib.SortType type);
+    DQueryJoin join(DFrame joinFrame);
     DQuery end();
 }
