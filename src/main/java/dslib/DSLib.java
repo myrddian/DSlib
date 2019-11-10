@@ -19,6 +19,7 @@ package dslib;
 
 import dslib.dataframe.DFrameSchema;
 import dslib.dataframe.DRow;
+import dslib.exec.ExecutionEngine;
 
 public class DSLib {
 
@@ -61,6 +62,10 @@ public class DSLib {
             }
         }
         return true;
+    }
+
+    public static ExecutionEngine getEE() {
+        return ExecutionEngine.getInstance();
     }
 
 }

@@ -83,6 +83,8 @@ public class DataFrameTest {
         System.out.println(crashFrame.size());
         crashFrame = crashFrame.addRow(newRow);
         System.out.println(crashFrame.size());
+        crashFrame = crashFrame.removeRow(0);
+        System.out.println(crashFrame.size());
     }
 
 /*

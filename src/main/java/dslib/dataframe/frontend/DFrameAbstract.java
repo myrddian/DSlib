@@ -201,7 +201,29 @@ public abstract class DFrameAbstract implements DFrame {
         newDf.setIndex(newIndex);
         return newDf;
     }
+    @Override
+    public DFrame removeRow(int location) {
+        List<Integer> removeList = new ArrayList<>();
+        removeList.add(location);
+        return removeRow(removeList);
+    }
 
+    @Override
+    public DFrame removeRow(List<Integer> locations) {
+        DFrameSelectTransform newDF = new DFrameSelectTransform();
+        newDF.setSchema(getSchema());
+        newDF.setStore(new DStoreFrameProxy(this));
+        DFrameIndexProxy newIndex = new DFrameIndexProxy();
+        int indexRemap = 0;
+        for(int counter=0; counter < size(); ++counter){
+            if(!locations.contains(counter)) {
+                newIndex.addMap(indexRemap,counter);
+                ++indexRemap;
+            }
+        }
+        newDF.setIndex(newIndex);
+        return newDF;
+    }
 
     private Map<String, Long> aggregateColumn(String index) {
         HashMap<String, Long> tableTrack = new HashMap<>();

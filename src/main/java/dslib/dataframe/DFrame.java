@@ -54,6 +54,8 @@ public interface DFrame {
     DRow createRow();
     DFrame addRow(DRow newRow);
     DFrame addRows(List<DRow> newRows);
+    DFrame removeRow(int location);
+    DFrame removeRow(List<Integer> locations);
     DFrameSchema getSchema();
 
 }
