@@ -68,6 +68,24 @@ public class DataFrameTest {
     }
 
     @Test
+    public void sortTest() {
+        DFrame dataFrame = DFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
+        DFrameSchemaBuilder modifySchema = DFrameSchemaBuilder.createSchema("Crash_Schema");
+        modifySchema.modifyExisting(dataFrame.getSchema());
+        modifySchema.defineColumn("Area Speed", DSLib.DataType.INTEGER);
+        modifySchema.defineColumn("ACCLOC_X", DSLib.DataType.FLOAT);
+        modifySchema.defineColumn("ACCLOC_Y", DSLib.DataType.FLOAT);
+        modifySchema.defineColumn("Total Units", DSLib.DataType.INTEGER);
+        DFrame crashFrame = dataFrame.apply(modifySchema.end());
+        DFrame sorted = crashFrame.sort("Total Units", DSLib.SortType.ASC);
+        long totalUnit = sorted.loc(0).get("Total Units");
+        System.out.println(totalUnit);
+        DFrame desSort = crashFrame.sort("Total Units", DSLib.SortType.DESC);
+        totalUnit = desSort.loc(0).get("Total Units");
+        System.out.println(totalUnit);
+    }
+
+    @Test
     public void modifyTest() {
         DFrame dataFrame = DFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
         DFrameSchemaBuilder modifySchema = DFrameSchemaBuilder.createSchema("Crash_Schema");
@@ -87,39 +105,4 @@ public class DataFrameTest {
         System.out.println(crashFrame.size());
     }
 
-/*
-
-
-    @Test
-    public void cloneTest() {
-        DFrame dataFrame = DFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
-        System.out.println(dataFrame.size());
-        System.out.println((String)dataFrame.loc(0).get("REPORT_ID"));
-        DFrame newDataFrame = dataFrame.clone();
-        DFrame newColumn =  newDataFrame.addColumn("TEST");
-        System.out.println(newColumn.get("TEST"));
-        System.out.println(dataFrame.isFactor("REPORT_ID"));
-        System.out.println(dataFrame.isFactor("Position Type"));
-        System.out.println(dataFrame.isFactor("Position Type",20));
-        DFrame germanData = DFrameFactory.read_csv(classLoader.getResource("german.data").getFile(), false, ' ');
-        System.out.println(germanData.isFactor(0,20));
-
-    }
-
-    @Test
-    public void selectTest() {
-        DFrame dataFrame = DFrameFactory.read_csv(classLoader.getResource("2018_DATA_SA_Crash.csv").getFile());
-        DFrame adelaideData = dataFrame.select("Suburb", "ADELAIDE");
-        DFrame reducedFields = dataFrame.select("Suburb", "ADELAIDE", "Total Units");
-        String [] fields = {"Suburb","Total Units"};
-        DFrame windowTest = dataFrame.window(fields);
-        System.out.println(adelaideData.size());
-        System.out.println(reducedFields.columns());
-        System.out.println(windowTest.columns());
-        DRow newRow = reducedFields.createRow();
-        newRow = newRow.modify("Total Units","12");
-        DFrame newRowFrame = reducedFields.addRow(newRow);
-        System.out.println(reducedFields.size());
-        System.out.println(newRowFrame.size());
-    }*/
 }

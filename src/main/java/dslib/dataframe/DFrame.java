@@ -17,6 +17,7 @@
 
 package dslib.dataframe;
 
+import dslib.DSLib;
 import dslib.dataframe.transform.DFrameColumnTransform;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public interface DFrame {
     DFrame apply(DFrameColumnTransform columnTransform);
     DFrame apply(DFrameSchema schema);
     DFrame select(String ... fields);
+    DFrame sort(String column, DSLib.SortType sortType);
 
     DRow createRow();
     DFrame addRow(DRow newRow);

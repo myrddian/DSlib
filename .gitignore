@@ -6,3 +6,7 @@ build
 
 .idea
 out
+*.class
+bin/main/2018_DATA_SA_Crash.csv
+*.prefs
+*.data

@@ -23,7 +23,14 @@ import dslib.dataframe.DFrameStore;
 import dslib.dataframe.backend.DFrameAddRowTransformStore;
 import dslib.dataframe.backend.DRowImplString;
 import dslib.dataframe.backend.DStoreFrameProxy;
+import dslib.dataframe.backend.MergeTupleSortResults;
+import dslib.dataframe.kernels.IndexTupleResult;
+import dslib.dataframe.kernels.KernelStaticInfo;
+import dslib.dataframe.kernels.ParallelSortKernel;
 import dslib.dataframe.transform.*;
+import dslib.exec.ExecuteParallelTask;
+import dslib.exec.ExecutionContext;
+import dslib.exec.ExecutionEngine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,6 +178,42 @@ public abstract class DFrameAbstract implements DFrame {
         selectTransform.setStore(new DStoreFrameProxy(this));
         selectTransform.setIndex(this.getIndexProxy());
         return selectTransform.apply(newSchemaBuilder.end());
+    }
+
+    @Override
+    public DFrame sort(String column, DSLib.SortType sortType) {
+        ExecutionEngine executionEngine = DSLib.getEE();
+        ExecuteParallelTask sortTask = executionEngine.createParallelTasks();
+        sortTask.addParam(KernelStaticInfo.sortField, column);
+        sortTask.addParam(KernelStaticInfo.dataFrame, this);
+        sortTask.addParam(KernelStaticInfo.sortOrder, sortType);
+        sortTask.addTasks(new ParallelSortKernel());
+        for(int counter=0; counter < this.size(); ++counter) {
+            sortTask.schedule(counter);
+        }
+        sortTask.exec();
+        sortTask.waitForTasks();
+
+        MergeTupleSortResults merger = new MergeTupleSortResults();
+        merger.setBaseDataFrame(this);
+        merger.setDataType(getSchema().type(column));
+        merger.setSortOrder(sortType);
+        merger.setSortCol(column);
+        for(int resSize=0; resSize < sortTask.contextSize(); ++resSize) {
+            List<IndexTupleResult> resultList = (List<IndexTupleResult>)sortTask.getContext(resSize).get(KernelStaticInfo.sortedIndex);
+            merger.addResultList(resultList);
+        }
+        DFrameIndexProxy indexProxy = new DFrameIndexProxy();
+        while(!merger.isExhausted()) {
+            IndexTupleResult bestTuple = merger.getNext();
+            indexProxy.addMap(bestTuple.getNewIndex(), bestTuple.getOldIndex());
+        }
+
+        DFrameProxyIndex retFrame = new DFrameProxyIndex();
+        retFrame.setIndex(indexProxy);
+        retFrame.setSchema(this.getSchema());
+        retFrame.setStore(new DStoreFrameProxy(this));
+        return  retFrame;
     }
 
     @Override

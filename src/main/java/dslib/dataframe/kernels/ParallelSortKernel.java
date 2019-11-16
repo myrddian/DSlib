@@ -50,6 +50,7 @@ public class ParallelSortKernel implements ExecTask {
             IndexTupleResult newMap = new IndexTupleResult();
             newMap.setOldIndex(sorted.getIndex());
             newMap.setNewIndex(remap);
+            returnList.add(newMap);
             ++remap;
         }
         return returnList;
@@ -76,6 +77,7 @@ public class ParallelSortKernel implements ExecTask {
             IndexTupleResult newMap = new IndexTupleResult();
             newMap.setOldIndex(sorted.getIndex());
             newMap.setNewIndex(remap);
+            returnList.add(newMap);
             ++remap;
         }
         return returnList;
@@ -85,7 +87,7 @@ public class ParallelSortKernel implements ExecTask {
         List<IndexValueIntTuple> valueIntTuplesTuples = new ArrayList<>();
         for(Object index: indexList) {
             int idx = (Integer)index;
-            int value = referenceFrame.loc(idx).get(sortField);
+            long value = referenceFrame.loc(idx).get(sortField);
             IndexValueIntTuple tuple = new IndexValueIntTuple(idx,value);
             valueIntTuplesTuples.add(tuple);
         }
@@ -101,6 +103,7 @@ public class ParallelSortKernel implements ExecTask {
             IndexTupleResult newMap = new IndexTupleResult();
             newMap.setOldIndex(sorted.getIndex());
             newMap.setNewIndex(remap);
+            returnList.add(newMap);
             ++remap;
         }
         return returnList;
