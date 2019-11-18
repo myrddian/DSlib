@@ -15,7 +15,7 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
+package dslib.dataframe.backend.store;
 
 import dslib.dataframe.*;
 

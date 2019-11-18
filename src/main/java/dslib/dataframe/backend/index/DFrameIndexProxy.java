@@ -15,37 +15,37 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
-
+package dslib.dataframe.backend.index;
 import dslib.dataframe.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class DStoreFrameProxy implements DFrameStore {
+public class DFrameIndexProxy implements DFrameIndex {
 
-    private DFrame backFrame;
+    private Map<Integer, Integer> indexMap = new HashMap<>();
 
+    @Override
+    public int mapToOrigin(int reference) {
+        return indexMap.get(reference);
+    }
     @Override
     public int size() {
-        return backFrame.size();
-    }
-
-
-    @Override
-    public DRow getRow(int index) {
-        DRow tmp = backFrame.loc(index);
-        return  tmp;
+        return indexMap.size();
     }
 
     @Override
-    public List<String> getColNames() {
-        return backFrame.getColNames();
+    public List<Integer> indexValues() {
+        return new ArrayList<Integer>(indexMap.values());
     }
 
-    public void setBackFrame(DFrame backFrame) {
-        this.backFrame = backFrame;
+    public void addMap(int reference, int origin) {
+        indexMap.put(reference,origin);
     }
-    public DStoreFrameProxy() {}
-    public DStoreFrameProxy(DFrame newBackFrame) {backFrame = newBackFrame;}
-
+    public DFrameIndexProxy(Map<Integer, Integer> bulkIndex) {
+        indexMap.putAll(bulkIndex);
+    }
+    public DFrameIndexProxy(){}
 }

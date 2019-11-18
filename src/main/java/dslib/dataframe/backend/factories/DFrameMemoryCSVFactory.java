@@ -15,12 +15,14 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
+package dslib.dataframe.backend.factories;
 
 import dslib.DSLib;
 import dslib.dataframe.DFrame;
 import dslib.dataframe.DFrameSchemaBuilder;
-import dslib.dataframe.transform.DFrameIndexImpl;
+import dslib.dataframe.backend.dataframes.*;
+import dslib.dataframe.backend.store.*;
+import dslib.dataframe.backend.index.DFrameIndexImpl;
 
 public class DFrameMemoryCSVFactory {
 

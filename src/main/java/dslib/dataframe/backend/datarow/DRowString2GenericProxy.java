@@ -15,16 +15,15 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.frontend;
+package dslib.dataframe.backend.datarow;
 
 import dslib.DSLib;
 import dslib.dataframe.DFrameSchema;
 import dslib.dataframe.DRow;
-import dslib.dataframe.backend.DRowImplString;
 
 import java.util.List;
 
-public class DRowProxyGeneric implements DRow {
+public class DRowString2GenericProxy implements DRow {
 
     public void setBackImplementation(DRowImplString backImplementation) {
         this.backImplementation = backImplementation;
@@ -54,7 +53,7 @@ public class DRowProxyGeneric implements DRow {
 
     @Override
     public DRow apply(DFrameSchema schema) {
-        DRowProxyGeneric newRow = new DRowProxyGeneric();
+        DRowString2GenericProxy newRow = new DRowString2GenericProxy();
         newRow.backImplementation = this.backImplementation;
         newRow.schema = schema;
         return newRow;
@@ -67,7 +66,7 @@ public class DRowProxyGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.STRING) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowProxyGeneric newRow = new DRowProxyGeneric();
+            DRowString2GenericProxy newRow = new DRowString2GenericProxy();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;
@@ -82,7 +81,7 @@ public class DRowProxyGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.INTEGER) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowProxyGeneric newRow = new DRowProxyGeneric();
+            DRowString2GenericProxy newRow = new DRowString2GenericProxy();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;
@@ -97,7 +96,7 @@ public class DRowProxyGeneric implements DRow {
         }
         if(schema.type(rowIndex) == DSLib.DataType.FLOAT) {
             DRowImplString newBack = (DRowImplString)backImplementation.modify(rowIndex,newVal);
-            DRowProxyGeneric newRow = new DRowProxyGeneric();
+            DRowString2GenericProxy newRow = new DRowString2GenericProxy();
             newRow.backImplementation = newBack;
             newRow.schema = schema;
             return newRow;

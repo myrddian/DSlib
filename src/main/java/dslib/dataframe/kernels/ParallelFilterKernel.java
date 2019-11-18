@@ -17,7 +17,7 @@
 
 package dslib.dataframe.kernels;
 
-import dslib.dataframe.backend.DRowImplString;
+import dslib.dataframe.backend.datarow.DRowImplString;
 import dslib.exec.ExecutionContext;
 import dslib.exec.ExecTask;
 

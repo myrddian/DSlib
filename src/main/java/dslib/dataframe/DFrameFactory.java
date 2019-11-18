@@ -18,11 +18,8 @@
 package dslib.dataframe;
 
 import dslib.DSLib;
-import dslib.dataframe.backend.DFrameMemoryCSVFactory;
-import dslib.dataframe.backend.DStoreStringImpl;
+import dslib.dataframe.backend.factories.DFrameMemoryCSVFactory;
 import dslib.dataframe.implementation.DQueryImpl;
-
-import java.util.Collection;
 
 public class DFrameFactory {
 

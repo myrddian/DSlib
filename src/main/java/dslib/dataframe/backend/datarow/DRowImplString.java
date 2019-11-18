@@ -15,11 +15,10 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
+package dslib.dataframe.backend.datarow;
 
 import dslib.dataframe.DFrameSchema;
 import dslib.dataframe.DRow;
-import dslib.dataframe.frontend.DRowProxyGeneric;
 
 import java.util.*;
 
@@ -34,7 +33,7 @@ public class DRowImplString implements DRow {
 
     @Override
     public DRow apply(DFrameSchema schema) {
-        DRowProxyGeneric genericRow = new DRowProxyGeneric();
+        DRowString2GenericProxy genericRow = new DRowString2GenericProxy();
         genericRow.setBackImplementation(this);
         genericRow.setSchema(schema);
         return genericRow;

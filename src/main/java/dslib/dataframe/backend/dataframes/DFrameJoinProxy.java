@@ -15,59 +15,50 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.transform;
+package dslib.dataframe.backend.dataframes;
 
 import dslib.dataframe.DFrame;
 import dslib.dataframe.DFrameSchema;
 import dslib.dataframe.DFrameStore;
-import dslib.dataframe.backend.DStoreFrameProxy;
+import dslib.dataframe.DRow;
+import dslib.dataframe.backend.index.*;
 import dslib.dataframe.frontend.DFrameAbstract;
+import dslib.dataframe.DFrameIndex;
 
-public class DFrameAddRowTransform extends DFrameAbstract {
+public class DFrameJoinProxy extends DFrameAbstract implements DFrameStore{
 
-    private DFrameStore backStorage;
-    private DFrameIndex index;
-    private DFrameSchema schema;
+    private DFrame parentFrame;
+    private DFrame childFrame;
+    private DFrameSchema joinSchema;
+    private DFrameIndexJoinProxy joinedIndex;
 
-    public void setBackStorage(DFrameStore backStorage) {
-        this.backStorage = backStorage;
-    }
-
-    public DFrameIndex getIndex() {
-        return index;
-    }
-
-    public void setIndex(DFrameIndex index) {
-        this.index = index;
-    }
-
-    public void setSchema(DFrameSchema schema) {
-        this.schema = schema;
+    @Override
+    public DRow loc(int index) {
+        return null;
     }
 
     @Override
     public DFrameStore getBackStorage() {
-        return backStorage;
+        return this;
     }
 
     @Override
     public DFrameIndex getIndexProxy() {
-        return index;
+        return joinedIndex;
     }
 
     @Override
     public DFrame apply(DFrameSchema schema) {
-        DFrameSelectTransform newFrame = new DFrameSelectTransform();
-        DStoreFrameProxy proxy = new DStoreFrameProxy();
-        proxy.setBackFrame(this);
-        newFrame.setStore(this.backStorage);
-        newFrame.setSchema(this.schema);
-        newFrame.setIndex(this.index);
-        return newFrame;
+        return null;
     }
 
     @Override
     public DFrameSchema getSchema() {
-        return schema;
+        return joinSchema;
+    }
+
+    @Override
+    public DRow getRow(int index) {
+        return null;
     }
 }

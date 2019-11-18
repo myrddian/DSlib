@@ -15,15 +15,15 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.transform;
+package dslib.dataframe.backend.dataframes;
 
-import dslib.dataframe.DFrame;
-import dslib.dataframe.DFrameSchema;
-import dslib.dataframe.DFrameStore;
-import dslib.dataframe.backend.DStoreFrameProxy;
+import dslib.DSLib;
+import dslib.dataframe.*;
+import dslib.dataframe.backend.store.*;
 import dslib.dataframe.frontend.DFrameAbstract;
+import dslib.dataframe.backend.index.DFrameIndexProxy;
 
-public class DFrameProxyIndex extends DFrameAbstract {
+public class DFrameStringImpl extends DFrameAbstract {
 
     public void setStore(DFrameStore store) {
         this.store = store;
@@ -52,19 +52,32 @@ public class DFrameProxyIndex extends DFrameAbstract {
     }
 
     @Override
-    public DFrameSchema getSchema() {
-        return schema;
+    public DRow loc(int index) {
+        return store.getRow(this.index.mapToOrigin(index));
     }
 
     @Override
     public DFrame apply(DFrameSchema schema) {
-        DFrameProxyIndex newFrame = new DFrameProxyIndex();
+        DFrameSchemaTransform newFrame = new DFrameSchemaTransform();
         DStoreFrameProxy proxy = new DStoreFrameProxy();
         proxy.setBackFrame(this);
-        newFrame.store = proxy;
-        newFrame.schema = schema;
-        newFrame.index = this.index;
+        newFrame.setStore(proxy);
+        newFrame.setSchema(schema);
+        DFrameIndexProxy indexProxy = new DFrameIndexProxy();
+        int currentIndex = 0;
+        for(int index=0; index < store.size(); ++index) {
+            if(DSLib.validRow(store.getRow(index), schema)) {
+                indexProxy.addMap(currentIndex,index);
+                ++currentIndex;
+            }
+        }
+        newFrame.setIndex(indexProxy);
         return newFrame;
+    }
+
+    @Override
+    public DFrameSchema getSchema() {
+        return schema;
     }
 
 }

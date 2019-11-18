@@ -15,19 +15,24 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.transform;
+package dslib.dataframe.backend.dataframes;
 
-import dslib.dataframe.DFrame;
-import dslib.dataframe.DFrameSchema;
-import dslib.dataframe.DFrameStore;
-import dslib.dataframe.backend.DStoreFrameProxy;
+import dslib.dataframe.*;
+import dslib.dataframe.backend.store.DStoreFrameProxy;
 import dslib.dataframe.frontend.DFrameAbstract;
 
-public class DFrameSelectTransform extends DFrameAbstract {
+public class DFrameAddRowTransform extends DFrameAbstract {
 
+    private DFrameStore backStorage;
+    private DFrameIndex index;
+    private DFrameSchema schema;
 
-    public void setStore(DFrameStore store) {
-        this.store = store;
+    public void setBackStorage(DFrameStore backStorage) {
+        this.backStorage = backStorage;
+    }
+
+    public DFrameIndex getIndex() {
+        return index;
     }
 
     public void setIndex(DFrameIndex index) {
@@ -38,13 +43,9 @@ public class DFrameSelectTransform extends DFrameAbstract {
         this.schema = schema;
     }
 
-    private DFrameStore store;
-    private DFrameIndex index;
-    private DFrameSchema schema;
-
     @Override
     public DFrameStore getBackStorage() {
-        return store;
+        return backStorage;
     }
 
     @Override
@@ -53,18 +54,13 @@ public class DFrameSelectTransform extends DFrameAbstract {
     }
 
     @Override
-    public DFrame apply(DFrameSchema schema) {
-        DFrameSelectTransform newFrame = new DFrameSelectTransform();
-        DStoreFrameProxy proxy = new DStoreFrameProxy();
-        proxy.setBackFrame(this);
-        newFrame.store = proxy;
-        newFrame.schema = schema;
-        newFrame.index = this.index;
-        return newFrame;
-    }
-
-    @Override
     public DFrameSchema getSchema() {
         return schema;
     }
+
+    @Override
+    public DRow loc(int index) {
+        return getBackStorage().getRow(getIndexProxy().mapToOrigin(index));
+    }
+
 }

@@ -14,12 +14,35 @@
         You should have received a copy of the Affero GNU General Public License
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
-package dslib.dataframe.transform;
+
+package dslib.dataframe.backend.utils;
+
+import dslib.dataframe.kernels.IndexTupleResult;
 
 import java.util.List;
 
-public interface DFrameIndex {
-    int mapToOrigin(int reference);
-    int size();
-    List<Integer> indexValues();
+public class TupleResultBuffer {
+    private int size = 0;
+    private int location = 0 ;
+    private List<IndexTupleResult> results;
+
+    public boolean isExhausted() {
+        if (location >= size )
+            return true;
+        return false;
+    }
+
+    public TupleResultBuffer(List<IndexTupleResult> res) {
+        size = res.size();
+        results = res;
+    }
+
+    public IndexTupleResult peek() {
+        return results.get(location);
+    }
+
+    public void take() {
+        location++;
+    }
+
 }

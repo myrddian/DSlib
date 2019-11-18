@@ -15,34 +15,37 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.transform;
+package dslib.dataframe.backend.store;
 
-import java.util.ArrayList;
+import dslib.dataframe.*;
+
 import java.util.List;
 
-public class DFrameIndexImpl implements DFrameIndex {
+public class DStoreFrameProxy implements DFrameStore {
 
-    private int indexSize;
-
-    public DFrameIndexImpl(int size) { indexSize = size; }
-
-    @Override
-    public int mapToOrigin(int reference) {
-        return reference;
-    }
+    private DFrame backFrame;
 
     @Override
     public int size() {
-        return indexSize;
+        return backFrame.size();
+    }
+
+
+    @Override
+    public DRow getRow(int index) {
+        DRow tmp = backFrame.loc(index);
+        return  tmp;
     }
 
     @Override
-    public List<Integer> indexValues() {
-        List<Integer> retVals = new ArrayList<>();
-        for(int i=0; i < indexSize; ++i){
-            retVals.add(i);
-        }
-        return retVals;
+    public List<String> getColNames() {
+        return backFrame.getColNames();
     }
+
+    public void setBackFrame(DFrame backFrame) {
+        this.backFrame = backFrame;
+    }
+    public DStoreFrameProxy() {}
+    public DStoreFrameProxy(DFrame newBackFrame) {backFrame = newBackFrame;}
 
 }

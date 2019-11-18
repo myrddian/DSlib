@@ -15,34 +15,36 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
+package dslib.dataframe.backend.index;
 
-import dslib.dataframe.kernels.IndexTupleResult;
+import dslib.dataframe.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TupleResultBuffer {
-    private int size = 0;
-    private int location = 0 ;
-    private List<IndexTupleResult> results;
+public class DFrameIndexImpl implements DFrameIndex {
 
-    public boolean isExhausted() {
-        if (location >= size )
-            return true;
-        return false;
+    private int indexSize;
+
+    public DFrameIndexImpl(int size) { indexSize = size; }
+
+    @Override
+    public int mapToOrigin(int reference) {
+        return reference;
     }
 
-    public TupleResultBuffer(List<IndexTupleResult> res) {
-        size = res.size();
-        results = res;
+    @Override
+    public int size() {
+        return indexSize;
     }
 
-    public IndexTupleResult peek() {
-        return results.get(location);
-    }
-
-    public void take() {
-        location++;
+    @Override
+    public List<Integer> indexValues() {
+        List<Integer> retVals = new ArrayList<>();
+        for(int i=0; i < indexSize; ++i){
+            retVals.add(i);
+        }
+        return retVals;
     }
 
 }

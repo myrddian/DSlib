@@ -16,14 +16,8 @@
 */
 package dslib.dataframe.kernels;
 
-import dslib.DSLib;
-import dslib.dataframe.DFrameSchemaBuilder;
-import dslib.dataframe.backend.DStoreFrameProxy;
-import dslib.dataframe.transform.DFrameSelectTransform;
 import dslib.exec.ExecTask;
 import dslib.exec.ExecutionContext;
-
-import java.util.List;
 
 public class ParallelSelectKernel implements ExecTask {
 

@@ -15,10 +15,12 @@
         along with this program.  If not, see <https://www.gnu.org/licenses/>
 */
 
-package dslib.dataframe.backend;
+package dslib.dataframe.backend.store;
 
 import dslib.dataframe.DFrameStore;
 import dslib.dataframe.DRow;
+import dslib.dataframe.backend.datarow.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -95,42 +97,4 @@ public class DStoreStringImpl implements DFrameStore {
             e.printStackTrace();
         }
     }
-
-    /*public DFrame addColumn(DColumn newColumn) {
-        if (newColumn.size() != this.size()) {
-            return null;
-        }
-        if(columns.containsKey(newColumn.name())){
-            return null;
-        }
-        DFrameImplString newDataFrame = this.clone();
-        newDataFrame.columns.put(newColumn.name(), new ArrayList<>());
-        List<String> values = newColumn.getStrings();
-        newDataFrame.columns.get(newColumn.name()).addAll(values);
-        newDataFrame.reverseMap.put(columns() +1, newColumn.name());
-        newDataFrame.reparseRows();
-        return newDataFrame;
-    }*/
-
-    /*private DFrame parallelSelect(String index, List<String> filterValue, List<String> fields) {
-        ExecuteParallelTask parallelTask = ExecutionEngine.getInstance().createParallelTasks();
-        parallelTask.addParam("index", index);
-        parallelTask.addParam("filterValues", filterValue);
-        parallelTask.addParam("fields", fields);
-        parallelTask.addTasks(new ParallelFilterKernel());
-        for(DRowImplString row: rows) {
-            parallelTask.schedule(row);
-        }
-        parallelTask.exec();
-        parallelTask.waitForTasks();
-        DFrameImplString newDataFrame = new DFrameImplString();
-        int outputSize = parallelTask.outputSize();
-        for(int counter=0 ; counter < outputSize; ++counter) {
-            newDataFrame.rows.add((DRowImplString)parallelTask.getOutputItem());
-        }
-        newDataFrame.reparseColumns(fields.toArray(new String[fields.size()]));
-        return newDataFrame;
-    }*/
-
-
 }
