@@ -10,3 +10,5 @@ out
 bin/main/2018_DATA_SA_Crash.csv
 *.prefs
 *.data
+.classpath
+.project
