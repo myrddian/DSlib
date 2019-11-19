@@ -23,7 +23,7 @@ import dslib.dataframe.DRow;
 import javax.xml.validation.Schema;
 import java.util.List;
 
-public class DRowJoinProxy implements DRow {
+public class DRowJoinProxy extends DRowImplAbstract {
 
     private Schema joinSchema;
     private DRow   frameOne;

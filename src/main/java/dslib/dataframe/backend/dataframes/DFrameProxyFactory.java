@@ -17,45 +17,31 @@
 
 package dslib.dataframe.backend.dataframes;
 
-import dslib.dataframe.*;
-import dslib.dataframe.frontend.DFrameAbstract;
 
-public class DFrameProxy extends DFrameAbstract {
+public class DFrameProxyFactory {
 
-    public void setStore(DFrameStore store) {
-        this.store = store;
+    public enum TYPE { DFRAME_PROXY, DFRAME_SCHEMA, DFRAME_SELECT, DFRAME_ADD_ROW}
+
+    public DFrameProxy create(TYPE frameType) {
+        switch (frameType) {
+            case DFRAME_SELECT:
+            case DFRAME_PROXY:
+            case DFRAME_ADD_ROW:
+                return new DFrameProxy();
+            case DFRAME_SCHEMA:
+                return new DFrameSchemaTransform();
+        }
+        return null;
     }
 
-    public void setIndex(DFrameIndex index) {
-        this.index = index;
+    public static synchronized DFrameProxyFactory getInstance(){
+        if(instance == null){
+            instance = new DFrameProxyFactory();
+        }
+        return instance;
     }
 
-    public void setSchema(DFrameSchema schema) {
-        this.schema = schema;
-    }
-
-    private DFrameStore store;
-    private DFrameIndex index;
-    private DFrameSchema schema;
-
-    @Override
-    public DFrameStore getBackStorage() {
-        return store;
-    }
-
-    @Override
-    public DFrameIndex getIndexProxy() {
-        return index;
-    }
-
-    @Override
-    public DFrameSchema getSchema() {
-        return schema;
-    }
-
-    @Override
-    public DRow loc(int index) {
-        return getBackStorage().getRow(getIndexProxy().mapToOrigin(index));
-    }
+    private DFrameProxyFactory() {}
+    private static DFrameProxyFactory instance;
 
 }

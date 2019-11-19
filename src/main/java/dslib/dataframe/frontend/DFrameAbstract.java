@@ -21,6 +21,7 @@ import dslib.DSLib;
 import dslib.dataframe.*;
 import dslib.dataframe.DFrameStore;
 import dslib.dataframe.backend.dataframes.*;
+import dslib.dataframe.backend.dataframes.DFrameProxyFactory;
 import dslib.dataframe.backend.index.*;
 import dslib.dataframe.backend.datarow.*;
 import dslib.dataframe.backend.store.*;
@@ -120,8 +121,9 @@ public abstract class DFrameAbstract implements DFrame {
         if(getSchema().type(index) == DSLib.DataType.INTEGER) {
             List<Integer> indexValues = getIndexProxy().indexValues();
             for(int indexMap: indexValues) {
-                DRow fetchedRow = getBackStorage().getRow(indexMap).apply(getSchema());
-                retVal.add(fetchedRow.get(index));
+                DRow fetchedRow = getBackStorage().getRow(indexMap);
+                retVal.add(DRowFactory.getInstance().transform(fetchedRow,getSchema()).get(index));
+                //retVal.add(fetchedRow.get(index));
             }
         }
         return retVal;
@@ -133,8 +135,9 @@ public abstract class DFrameAbstract implements DFrame {
         if(getSchema().type(index) == DSLib.DataType.FLOAT) {
             List<Integer> indexValues = getIndexProxy().indexValues();
             for(int indexMap: indexValues) {
-                DRow fetchedRow = getBackStorage().getRow(indexMap).apply(getSchema());
-                retVal.add(fetchedRow.get(index));
+                DRow fetchedRow = getBackStorage().getRow(indexMap);
+                retVal.add(DRowFactory.getInstance().transform(fetchedRow,getSchema()).get(index));
+               //retVal.add(fetchedRow.get(index));
             }
         }
         return retVal;
@@ -157,7 +160,7 @@ public abstract class DFrameAbstract implements DFrame {
 
     @Override
     public DFrame apply(DFrameSchema schema) {
-        DFrameSchemaTransform newFrame = new DFrameSchemaTransform();
+        DFrameProxy newFrame = DFrameProxyFactory.getInstance().create(DFrameProxyFactory.TYPE.DFRAME_SCHEMA);
         DStoreFrameProxy proxy = new DStoreFrameProxy();
         proxy.setBackFrame(this);
         newFrame.setIndex(this.getIndexProxy());
@@ -176,7 +179,7 @@ public abstract class DFrameAbstract implements DFrame {
             newSchemaBuilder.defineColumn(fieldSelection,getSchema().type(fieldSelection));
 
         }
-        DFrameProxy selectTransform = new DFrameProxy();
+        DFrameProxy selectTransform = DFrameProxyFactory.getInstance().create(DFrameProxyFactory.TYPE.DFRAME_SCHEMA);
         selectTransform.setSchema(newSchemaBuilder.end());
         selectTransform.setStore(new DStoreFrameProxy(this));
         selectTransform.setIndex(this.getIndexProxy());
@@ -212,7 +215,7 @@ public abstract class DFrameAbstract implements DFrame {
             indexProxy.addMap(bestTuple.getNewIndex(), bestTuple.getOldIndex());
         }
 
-        DFrameProxy retFrame = new DFrameProxy();
+        DFrameProxy retFrame = DFrameProxyFactory.getInstance().create(DFrameProxyFactory.TYPE.DFRAME_PROXY);
         retFrame.setIndex(indexProxy);
         retFrame.setSchema(this.getSchema());
         retFrame.setStore(new DStoreFrameProxy(this));
@@ -221,11 +224,7 @@ public abstract class DFrameAbstract implements DFrame {
 
     @Override
     public DRow createRow() {
-        DRowImplString stringVersion = new DRowImplString();
-        DRowString2GenericProxy genericContainer = new DRowString2GenericProxy();
-        genericContainer.setSchema(getSchema());
-        genericContainer.setBackImplementation(stringVersion);
-        return genericContainer;
+        return DRowFactory.getInstance().createRow(getSchema());
     }
 
     @Override
@@ -238,12 +237,12 @@ public abstract class DFrameAbstract implements DFrame {
     @Override
     public DFrame addRows(List<DRow> newRows) {
         DFrameAddRowTransformStore newStore = new DFrameAddRowTransformStore();
-        DFrameAddRowTransform newDf = new DFrameAddRowTransform();
+        DFrameProxy newDf = DFrameProxyFactory.getInstance().create(DFrameProxyFactory.TYPE.DFRAME_PROXY);
         newStore.setBackFrame(this);
         newStore.addRows(newRows);
         newDf.setSchema(getSchema());
         DFrameIndexImpl newIndex = new DFrameIndexImpl(size()+ newRows.size());
-        newDf.setBackStorage(newStore);
+        newDf.setStore(newStore);
         newDf.setIndex(newIndex);
         return newDf;
     }
@@ -256,7 +255,7 @@ public abstract class DFrameAbstract implements DFrame {
 
     @Override
     public DFrame removeRow(List<Integer> locations) {
-        DFrameProxy newDF = new DFrameProxy();
+        DFrameProxy newDF = DFrameProxyFactory.getInstance().create(DFrameProxyFactory.TYPE.DFRAME_PROXY);
         newDF.setSchema(getSchema());
         newDF.setStore(new DStoreFrameProxy(this));
         DFrameIndexProxy newIndex = new DFrameIndexProxy();

@@ -22,7 +22,7 @@ import dslib.dataframe.DRow;
 
 import java.util.*;
 
-public class DRowImplString implements DRow {
+public class DRowImplString extends DRowImplAbstract {
 
     private HashMap<String,String> rowValues = new HashMap<>();
 

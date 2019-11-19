@@ -25,5 +25,4 @@ public interface DRow {
     DRow modify(String rowIndex, double newVal);
     List<String> getColumns();
     <Any> Any get(String index);
-    DRow apply(DFrameSchema schema);
 }

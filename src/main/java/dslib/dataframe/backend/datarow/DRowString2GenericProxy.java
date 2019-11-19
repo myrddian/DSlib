@@ -23,7 +23,7 @@ import dslib.dataframe.DRow;
 
 import java.util.List;
 
-public class DRowString2GenericProxy implements DRow {
+public class DRowString2GenericProxy extends DRowImplAbstract {
 
     public void setBackImplementation(DRowImplString backImplementation) {
         this.backImplementation = backImplementation;

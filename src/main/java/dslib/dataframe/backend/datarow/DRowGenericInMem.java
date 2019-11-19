@@ -24,25 +24,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DRowGenericInMem implements DRow {
+public class DRowGenericInMem extends DRowImplAbstract {
 
     private DFrameSchema rowSchema;
     private Map<String, String> stringStorage = new HashMap<>();
     private Map<String, Double> doubleStorage = new HashMap<>();
     private Map<String, Long>   longStorage = new HashMap<>();
 
+    private DRowGenericInMem createCopy() {
+        DRowGenericInMem newCopy = new DRowGenericInMem();
+        newCopy.rowSchema = this.rowSchema;
+        newCopy.stringStorage.putAll(this.stringStorage);
+        newCopy.doubleStorage.putAll(this.doubleStorage);
+        newCopy.longStorage.putAll(this.longStorage);
+        return newCopy;
+    }
+
+    public void setRowSchema(DFrameSchema newSchema) { rowSchema = newSchema;}
+
     @Override
     public DRow modify(String rowIndex, String newVal) {
+        if(rowSchema.type(rowIndex)== DSLib.DataType.STRING) {
+            DRowGenericInMem newItem = createCopy();
+            newItem.stringStorage.put(rowIndex,newVal);
+            return newItem;
+        }
         return null;
     }
 
     @Override
     public DRow modify(String rowIndex, long newVal) {
+        if(rowSchema.type(rowIndex)== DSLib.DataType.INTEGER) {
+            DRowGenericInMem newItem = createCopy();
+            newItem.longStorage.put(rowIndex,newVal);
+            return newItem;
+        }
         return null;
     }
 
     @Override
     public DRow modify(String rowIndex, double newVal) {
+        if(rowSchema.type(rowIndex)== DSLib.DataType.FLOAT) {
+            DRowGenericInMem newItem = createCopy();
+            newItem.doubleStorage.put(rowIndex,newVal);
+            return newItem;
+        }
         return null;
     }
 
@@ -68,6 +94,8 @@ public class DRowGenericInMem implements DRow {
 
     @Override
     public DRow apply(DFrameSchema schema) {
-        return this;
+        DRowGenericInMem copy = createCopy();
+        copy.rowSchema = schema;
+        return copy;
     }
 }

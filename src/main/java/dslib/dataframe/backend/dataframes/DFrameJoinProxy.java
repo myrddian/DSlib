@@ -25,7 +25,7 @@ import dslib.dataframe.backend.index.*;
 import dslib.dataframe.frontend.DFrameAbstract;
 import dslib.dataframe.DFrameIndex;
 
-public class DFrameJoinProxy extends DFrameAbstract implements DFrameStore{
+public class DFrameJoinProxy extends DFrameProxy implements DFrameStore{
 
     private DFrame parentFrame;
     private DFrame childFrame;
